@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jonathan Gregg · Analytics Engineer</title>
+  <meta name="description" content="Jonathan Gregg is a Boston-based analytics engineer who builds governed, tested data products: dbt, Snowflake, Dagster, and BI.">
+  <meta property="og:title" content="Jonathan Gregg · Analytics Engineer">
+  <meta property="og:description" content="I build metrics people can trust. Selected work, experience, and contact.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#f4f1e9">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+  <!-- Apply the saved theme before first paint to avoid a flash. -->
+  <script>
+    try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header" id="top">
+    <div class="wrap header-inner">
+      <a class="wordmark" href="#top" aria-label="Back to top">
+        <span class="monogram" aria-hidden="true">JG</span>
+        <span class="wordmark-name" data-bind="name"></span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">Menu</button>
+        <ul id="nav-list">
+          <li><a href="#work">Work</a></li>
+          <li><a href="#approach">Approach</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <button class="theme-toggle" type="button" aria-label="Switch color theme">
+          <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 3a7 7 0 0 1 0 14z" fill="currentColor"/></svg>
+        </button>
+        <a class="btn btn-small" data-bind-href="resume" download>Résumé</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="contours" aria-hidden="true"></div>
+      <div class="wrap hero-inner">
+        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span><span data-bind="availability"></span></p>
+        <h1 class="hero-title">
+          <span class="hero-name" data-bind="name"></span>
+          <span class="hero-headline" data-bind="hero.headline"></span>
+        </h1>
+        <p class="hero-intro" data-bind="hero.intro"></p>
+        <div class="hero-cta">
+          <a class="btn" href="#work">See selected work</a>
+          <a class="btn btn-ghost" href="#contact">Get in touch</a>
+        </div>
+        <dl class="glance" id="glance"></dl>
+      </div>
+    </section>
+
+    <!-- Work -->
+    <section class="section" id="work" aria-labelledby="work-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">01 · Selected work</p>
+          <h2 id="work-title">Problems I've solved, and how</h2>
+          <p class="section-lede">Each case study covers the problem, my approach, and the outcome. Client names and internal figures are left out.</p>
+        </div>
+        <div class="filters" role="toolbar" aria-label="Filter case studies" id="filters"></div>
+        <p class="filter-count" id="filter-count" aria-live="polite"></p>
+        <ol class="work-list" id="work-list"></ol>
+      </div>
+    </section>
+
+    <!-- Approach -->
+    <section class="section section-alt" id="approach" aria-labelledby="approach-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">02 · Approach</p>
+          <h2 id="approach-title">How I work</h2>
+        </div>
+        <ol class="principles" id="principles"></ol>
+      </div>
+    </section>
+
+    <!-- Experience -->
+    <section class="section" id="experience" aria-labelledby="exp-title">
+      <div class="wrap two-col">
+        <div class="section-head">
+          <p class="kicker">03 · Experience</p>
+          <h2 id="exp-title">Where I've done it</h2>
+          <p class="section-lede">Seven years across four companies, from client implementations to analytics engineering.</p>
+          <a class="text-link" data-bind-href="resume" download>Download the full résumé →</a>
+        </div>
+        <div>
+          <ol class="timeline" id="timeline"></ol>
+          <h3 class="toolkit-title">Toolkit</h3>
+          <div class="toolkit" id="toolkit"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="section section-alt" id="about" aria-labelledby="about-title">
+      <div class="wrap two-col">
+        <div class="section-head">
+          <p class="kicker">04 · About</p>
+          <h2 id="about-title">From maps to metrics</h2>
+        </div>
+        <div class="prose" id="about-body"></div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap">
+        <p class="kicker">05 · Contact</p>
+        <h2 id="contact-title" class="contact-title">Hiring for analytics engineering or BI? Let's talk.</h2>
+        <div class="contact-row">
+          <a class="contact-email" data-bind-mailto="email"><span data-bind="email"></span></a>
+          <button class="btn btn-ghost btn-small" type="button" id="copy-email">Copy email</button>
+        </div>
+        <ul class="contact-links" id="contact-links"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p>© <span id="year"></span> <span data-bind="name"></span> · <span data-bind="location"></span></p>
+      <a href="#top" class="text-link">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <!-- Case study panel -->
+  <dialog class="case" id="case" aria-labelledby="case-title">
+    <div class="case-bar">
+      <p class="case-meta" id="case-meta"></p>
+      <button class="case-close" type="button" data-close aria-label="Close case study">Close <kbd>Esc</kbd></button>
+    </div>
+    <article class="case-body" id="case-body"></article>
+    <div class="case-nav">
+      <button type="button" class="case-step" data-step="-1">← Previous</button>
+      <span class="case-pos" id="case-pos"></span>
+      <button type="button" class="case-step" data-step="1">Next →</button>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <noscript><p class="wrap">This site needs JavaScript to show its content. You can also reach me at jonathan.a.gregg@gmail.com.</p></noscript>
+
+  <script src="assets/js/content.js"></script>
+  <script src="assets/js/contours.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

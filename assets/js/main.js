@@ -173,7 +173,7 @@
       '<li class="role">' +
         '<details' + (i === 0 ? " open" : "") + ">" +
           '<summary><span class="role-head"><span class="role-title">' + esc(x.role) + '</span><span class="role-org">' + esc(x.org) + "</span></span>" +
-          '<span class="role-dates">' + esc(x.dates) + "<br>" + esc(x.place) + "</span></summary>" +
+          '<span class="role-dates"><span>' + esc(x.dates) + '</span><span class="role-place">' + esc(x.place) + "</span></span></summary>" +
           '<p class="role-blurb">' + esc(x.blurb) + "</p>" +
           "<ul>" + x.points.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + "</ul>" +
         "</details>" +
@@ -196,6 +196,51 @@
     var ext = /^https?:/.test(l[1]);
     return '<li><a class="text-link" href="' + esc(l[1]) + '"' + (ext ? ' target="_blank" rel="noopener"' : " download") + ">" + esc(l[0]) + (ext ? " ↗" : " ↓") + "</a></li>";
   }).join("");
+
+  /* ---------- Side projects + full-screen image viewer ---------- */
+  var projects = S.projects || [];
+  $("#project-list").innerHTML = projects.map(function (pr) {
+    return (
+      '<article class="project" id="project-' + esc(pr.id) + '">' +
+        '<figure class="project-figure">' +
+          '<button type="button" class="project-zoom" data-lightbox="' + esc(pr.id) + '" aria-label="View ' + esc(pr.title) + ' full size">' +
+            '<img src="' + esc(pr.image) + '" alt="' + esc(pr.alt) + '" width="' + pr.width + '" height="' + pr.height + '" loading="lazy" decoding="async">' +
+            '<span class="project-zoom-hint" aria-hidden="true">View full size</span>' +
+          "</button>" +
+        "</figure>" +
+        '<div class="project-text">' +
+          '<p class="work-meta">' + esc(pr.kicker) + (pr.year ? " · " + esc(pr.year) : "") + "</p>" +
+          "<h3>" + esc(pr.title) + "</h3>" +
+          "<p>" + esc(pr.summary) + "</p>" +
+          '<dl class="project-facts">' + pr.facts.map(function (f) { return "<div><dd>" + esc(f.value) + "</dd><dt>" + esc(f.label) + "</dt></div>"; }).join("") + "</dl>" +
+          (pr.why ? '<p class="project-why"><strong>Why it\'s here:</strong> ' + esc(pr.why) + "</p>" : "") +
+          (pr.tools && pr.tools.length ? '<p class="stack">' + pr.tools.map(function (t) { return '<span class="tag">' + esc(t) + "</span>"; }).join("") + "</p>" : "") +
+          (pr.source ? '<p class="project-source">Data: ' + (pr.sourceUrl ? '<a class="text-link" href="' + esc(pr.sourceUrl) + '" target="_blank" rel="noopener">' + esc(pr.source) + "</a>" : esc(pr.source)) + "</p>" : "") +
+        "</div>" +
+      "</article>"
+    );
+  }).join("");
+  if (!projects.length) { var ps = $("#projects"); if (ps) ps.hidden = true; var pl = $('#nav-list a[href="#projects"]'); if (pl) pl.parentNode.hidden = true; }
+
+  var lightbox = $("#lightbox"), lbImg = $("#lightbox-img"), lbFocus = null;
+  $("#project-list").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-lightbox]");
+    if (!b) return;
+    var pr = projects.filter(function (x) { return x.id === b.dataset.lightbox; })[0];
+    lbImg.src = pr.image; lbImg.alt = pr.alt;
+    $("#lightbox-caption").textContent = pr.title;
+    $("#lightbox-open").href = pr.image;
+    lbFocus = b;
+    lightbox.showModal();
+    document.documentElement.classList.add("modal-open");
+  });
+  lightbox.addEventListener("click", function (e) {
+    if (e.target === lightbox || e.target === lbImg || e.target.closest("[data-close-lightbox]")) lightbox.close();
+  });
+  lightbox.addEventListener("close", function () {
+    document.documentElement.classList.remove("modal-open");
+    if (lbFocus) lbFocus.focus();
+  });
 
   /* ---------- Copy email ---------- */
   var toast = $("#toast"), toastTimer;
@@ -260,6 +305,6 @@
     var reveal = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("in"); reveal.unobserve(en.target); } });
     }, { rootMargin: "0px 0px -8% 0px" });
-    $$(".work-item, .principle, .role, .tool-group").forEach(function (el) { el.classList.add("reveal"); reveal.observe(el); });
+    $$(".work-item, .principle, .role, .tool-group, .project").forEach(function (el) { el.classList.add("reveal"); reveal.observe(el); });
   }
 })();

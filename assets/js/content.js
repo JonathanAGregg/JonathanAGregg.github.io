@@ -184,6 +184,33 @@ window.SITE = {
     },
   ],
 
+  // Side projects. Each gets a large framed image with a write-up beside it.
+  // Clicking the image opens a full-screen viewer. Leave a field "" to hide it.
+  projects: [
+    {
+      id: "helsinki",
+      kicker: "Cartography",
+      title: "The evolution of Helsinki\u2019s built environment",
+      year: "", // TODO: the year you made it, e.g. "2025"
+      image: "assets/img/helsinki-building-age.webp",
+      width: 1400,
+      height: 1250,
+      alt: "Dark basemap of Helsinki with every building colored by construction era, from pale yellow in the 19th-century harbor center through gold and orange to deep blue in the outer suburbs, with a bar chart of building counts by age.",
+      summary:
+        "A map of every building in Helsinki colored by construction era. The palette runs from pale yellow (the neoclassical center of the 1810s) through gold and orange (industrial and functionalist eras) to deep blue (post-war suburbs and recent development), so you can see the city grow outward from the harbor at a glance.",
+      why:
+        "It uses the same skills as my day job at a different scale: sourcing open data, cleaning and classifying tens of thousands of records, choosing an encoding that makes one pattern obvious, and crediting the source.",
+      facts: [
+        { value: "~50K", label: "buildings mapped" },
+        { value: "11", label: "construction eras" },
+        { value: "1550\u20132020", label: "time span" },
+      ],
+      tools: [], // TODO: e.g. ["Tableau", "Python", "QGIS"]
+      source: "HSY (Helsinki Region Environmental Services)",
+      sourceUrl: "https://www.hsy.fi/",
+    },
+  ],
+
   principles: [
     {
       title: "Definitions before dashboards",

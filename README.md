@@ -57,6 +57,7 @@ tools/make_contours.py  Regenerates the topographic background
 | Remove a case study | Delete its block from `work`. |
 | Change the filter buttons | They're built from each case study's `tags`, so edit the tags. |
 | Change the stat strip | `glance` in `content.js` |
+| Add a side project | Put the image in `assets/img/`, then copy the block in `projects: [...]` and update `image`, `width`, `height` (the image's pixel size), `alt`, and the text. |
 | Change colors | Edit the variables at the top of `styles.css`. Light mode is in `:root`; dark mode is in the two dark blocks right below it. Change both dark blocks together. |
 | Change fonts | Edit the Google Fonts `<link>` in `index.html` and the `--serif`, `--sans`, and `--mono` variables. |
 | Get a different contour pattern | `python3 tools/make_contours.py 12` (any number works as a seed; needs `pip install numpy`) |
@@ -65,6 +66,7 @@ tools/make_contours.py  Regenerates the topographic background
 
 - **Case studies** open in a side panel. You can page through them with Previous/Next or the ← and → arrow keys, and close with Esc.
   - Each case study has its own shareable link, e.g. `yoursite.com/#work/recruiter-scorecard`. This is useful to include in an application.
+- **Side projects** get a large framed image with a write-up beside it. Clicking the image opens a full-screen viewer, and "Open original" shows the image at full resolution.
 - **Filters** narrow the case studies by area.
 - **Light and dark themes:** follows the visitor's system setting, with a toggle that's remembered.
 - **Copy-email button** with a confirmation message.

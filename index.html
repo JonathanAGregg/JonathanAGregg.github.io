@@ -39,6 +39,7 @@
           <li><a href="#approach">Approach</a></li>
           <li><a href="#experience">Experience</a></li>
           <li><a href="#about">About</a></li>
+          <li><a href="#projects">Projects</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
@@ -123,10 +124,21 @@
       </div>
     </section>
 
+    <!-- Side projects -->
+    <section class="section" id="projects" aria-labelledby="projects-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">05 · Side projects</p>
+          <h2 id="projects-title">Maps, off the clock</h2>
+        </div>
+        <div id="project-list"></div>
+      </div>
+    </section>
+
     <!-- Contact -->
     <section class="section contact" id="contact" aria-labelledby="contact-title">
       <div class="wrap">
-        <p class="kicker">05 · Contact</p>
+        <p class="kicker">06 · Contact</p>
         <h2 id="contact-title" class="contact-title">Hiring for analytics engineering or BI? Let's talk.</h2>
         <div class="contact-row">
           <a class="contact-email" data-bind-mailto="email"><span data-bind="email"></span></a>
@@ -156,6 +168,18 @@
       <span class="case-pos" id="case-pos"></span>
       <button type="button" class="case-step" data-step="1">Next →</button>
     </div>
+  </dialog>
+
+  <!-- Full-screen image viewer -->
+  <dialog class="lightbox" id="lightbox" aria-label="Full-size image">
+    <div class="lightbox-bar">
+      <p class="lightbox-caption" id="lightbox-caption"></p>
+      <div class="lightbox-actions">
+        <a class="lightbox-btn" id="lightbox-open" target="_blank" rel="noopener">Open original ↗</a>
+        <button class="lightbox-btn" type="button" data-close-lightbox>Close <kbd>Esc</kbd></button>
+      </div>
+    </div>
+    <img id="lightbox-img" alt="">
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>

@@ -14,7 +14,7 @@ window.SITE = {
 
   email: "jonathan.a.gregg@gmail.com",
   links: {
-    linkedin: "", // TODO: e.g. "https://www.linkedin.com/in/your-profile"
+    linkedin: "https://www.linkedin.com/in/jonathan-a-gregg/",
     github: "",   // TODO: e.g. "https://github.com/JonathanAGregg" (leave "" to hide)
   },
   // Put your résumé in assets/files/. A PDF is best for recruiters; export one from Word.

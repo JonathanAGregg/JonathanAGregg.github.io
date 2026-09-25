@@ -99,6 +99,13 @@ tools/make_contours.py  Regenerates the topographic background
 ### Option C: Cloudflare Pages or Vercel
 Import the GitHub repository and leave both the build command and the framework preset empty. The output directory is `/`.
 
+### This site's live setup
+- **Live at:** <https://jonathanagregg.com>. The old `https://jonathanagregg.github.io` address redirects there automatically.
+- **Hosting:** GitHub Pages from the `main` branch of `JonathanAGregg/JonathanAGregg.github.io`.
+- **Domain:** registered at Cloudflare. DNS records (all set to **DNS only**, gray cloud): four `A` and four `AAAA` records on `@` pointing to GitHub Pages, plus a `CNAME` for `www` → `jonathanagregg.github.io`. A `_github-pages-challenge-JonathanAGregg` TXT record verifies the domain with GitHub.
+- **The `CNAME` file** in this folder tells GitHub Pages which domain to serve. Don't delete it.
+- **Renewal:** the domain renews yearly at Cloudflare. Keep auto-renew on so the site doesn't go dark.
+
 ### Custom domain (optional, about $12/year)
 1. Buy a domain like `jonathangregg.com` from a registrar (Cloudflare, Namecheap, Porkbun).
 2. Add it in your host's domain settings (Netlify: Domain management; GitHub: Settings → Pages → Custom domain).

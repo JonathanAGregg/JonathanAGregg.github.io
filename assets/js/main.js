@@ -39,7 +39,7 @@
     return (
       '<li class="work-item" data-tags="' + esc(w.tags.map(slug).join(" ")) + '">' +
         '<a class="work-link" href="#work/' + esc(w.id) + '" data-open="' + esc(w.id) + '">' +
-          '<span class="work-index">' + String(i + 1).padStart(2, "0") + "</span>" +
+          '<span class="work-index"><span>CASE</span><strong>' + String(i + 1).padStart(2, "0") + "</strong></span>" +
           '<span class="work-main">' +
             '<span class="work-meta">' + esc(w.org) + " · " + esc(w.year) + "</span>" +
             '<span class="work-title">' + esc(w.title) + "</span>" +

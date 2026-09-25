@@ -216,6 +216,7 @@ window.SITE = {
       title: "The evolution of Helsinki\u2019s built environment",
       year: "", // TODO: the year you made it, e.g. "2025"
       image: "assets/img/helsinki-building-age.webp",
+      loading: "eager",
       width: 1400,
       height: 1250,
       alt: "Dark basemap of Helsinki with every building colored by construction era, from pale yellow in the 19th-century harbor center through gold and orange to deep blue in the outer suburbs, with a bar chart of building counts by age.",

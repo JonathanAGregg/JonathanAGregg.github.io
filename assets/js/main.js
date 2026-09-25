@@ -203,8 +203,9 @@
     return (
       '<article class="project" id="project-' + esc(pr.id) + '">' +
         '<figure class="project-figure">' +
-          '<button type="button" class="project-zoom" data-lightbox="' + esc(pr.id) + '" aria-label="View ' + esc(pr.title) + ' full size">' +
-            '<img src="' + esc(pr.image) + '" alt="' + esc(pr.alt) + '" width="' + pr.width + '" height="' + pr.height + '" loading="lazy" decoding="async">' +
+          '<button type="button" class="project-zoom" style="--project-aspect:' + pr.width + ' / ' + pr.height + '" data-lightbox="' + esc(pr.id) + '" aria-label="View ' + esc(pr.title) + ' full size">' +
+            '<img src="' + esc(pr.image) + '" alt="' + esc(pr.alt) + '" width="' + pr.width + '" height="' + pr.height + '" loading="' + esc(pr.loading || "lazy") + '" decoding="async">' +
+            '<span class="project-image-fallback" hidden>Preview unavailable. Open the project source below.</span>' +
             '<span class="project-zoom-hint" aria-hidden="true">View full size</span>' +
           "</button>" +
         "</figure>" +
@@ -221,6 +222,14 @@
     );
   }).join("");
   if (!projects.length) { var ps = $("#projects"); if (ps) ps.hidden = true; var pl = $('#nav-list a[href="#projects"]'); if (pl) pl.parentNode.hidden = true; }
+
+  $$(".project-zoom img", $("#project-list")).forEach(function (image) {
+    image.addEventListener("error", function () {
+      image.hidden = true;
+      var fallback = image.nextElementSibling;
+      if (fallback) fallback.hidden = false;
+    });
+  });
 
   var lightbox = $("#lightbox"), lbImg = $("#lightbox-img"), lbFocus = null;
   $("#project-list").addEventListener("click", function (e) {

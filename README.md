@@ -57,7 +57,7 @@ tools/make_contours.py  Regenerates the topographic background
 | Remove a case study | Delete its block from `work`. |
 | Change the filter buttons | They're built from each case study's `tags`, so edit the tags. |
 | Change the stat strip | `glance` in `content.js` |
-| Add a side project | Put the image in `assets/img/`, then copy the block in `projects: [...]` and update `image`, `width`, `height` (the image's pixel size), `alt`, and the text. |
+| Add a side project | Put the image in `assets/img/`, then copy the block in `projects: [...]` and update `image`, `width`, `height` (the image's pixel size), `alt`, and the text. For large images, also set `zoomImage` (the viewer) and `fullImage` ("Open original") to bigger files. |
 | Change colors | Edit the variables at the top of `styles.css`. Light mode is in `:root`; dark mode is in the two dark blocks right below it. Change both dark blocks together. |
 | Change fonts | Edit the Google Fonts `<link>` in `index.html` and the `--serif`, `--sans`, and `--mono` variables. |
 | Get a different contour pattern | `python3 tools/make_contours.py 12` (any number works as a seed; needs `pip install numpy`) |

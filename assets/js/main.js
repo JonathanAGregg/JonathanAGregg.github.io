@@ -236,9 +236,9 @@
     var b = e.target.closest("[data-lightbox]");
     if (!b) return;
     var pr = projects.filter(function (x) { return x.id === b.dataset.lightbox; })[0];
-    lbImg.src = pr.image; lbImg.alt = pr.alt;
+    lbImg.src = pr.zoomImage || pr.image; lbImg.alt = pr.alt;
     $("#lightbox-caption").textContent = pr.title;
-    $("#lightbox-open").href = pr.image;
+    $("#lightbox-open").href = pr.fullImage || pr.zoomImage || pr.image;
     lbFocus = b;
     lightbox.showModal();
     document.documentElement.classList.add("modal-open");

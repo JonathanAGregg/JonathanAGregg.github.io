@@ -20,7 +20,6 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
@@ -58,22 +57,21 @@
       <div class="contours" aria-hidden="true"></div>
       <div class="wrap hero-inner">
         <div class="hero-copy">
-          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span><span data-bind="availability"></span></p>
+          <p class="eyebrow"><span data-bind="availability"></span></p>
           <h1 class="hero-title">
             <span class="hero-name" data-bind="name"></span>
             <span class="hero-headline" data-bind="hero.headline"></span>
           </h1>
           <p class="hero-intro" data-bind="hero.intro"></p>
           <div class="hero-cta">
-            <a class="btn" href="#work">Explore selected work</a>
-            <a class="btn btn-ghost" href="#contact">Start a conversation</a>
+            <a class="text-link" href="#work">Selected work</a>
+            <a class="text-link" href="#contact">Get in touch</a>
           </div>
-        </div>
-        <aside class="hero-signal" aria-label="Professional focus">
-          <p class="signal-label">Field notes · Boston, MA</p>
-          <p class="signal-summary">Evidence-first analytics for decisions that have to hold up after the meeting.</p>
           <dl class="glance" id="glance"></dl>
-        </aside>
+        </div>
+        <figure class="hero-portrait">
+          <img src="assets/img/jonathan-gregg.jpg" alt="Portrait of Jonathan Gregg" width="1600" height="2133" fetchpriority="high" decoding="async">
+        </figure>
       </div>
     </section>
 

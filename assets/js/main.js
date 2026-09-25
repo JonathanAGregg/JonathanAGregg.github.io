@@ -215,7 +215,7 @@
           '<dl class="project-facts">' + pr.facts.map(function (f) { return "<div><dd>" + esc(f.value) + "</dd><dt>" + esc(f.label) + "</dt></div>"; }).join("") + "</dl>" +
           (pr.why ? '<p class="project-why"><strong>Why it\'s here:</strong> ' + esc(pr.why) + "</p>" : "") +
           (pr.tools && pr.tools.length ? '<p class="stack">' + pr.tools.map(function (t) { return '<span class="tag">' + esc(t) + "</span>"; }).join("") + "</p>" : "") +
-          (pr.source ? '<p class="project-source">Data: ' + (pr.sourceUrl ? '<a class="text-link" href="' + esc(pr.sourceUrl) + '" target="_blank" rel="noopener">' + esc(pr.source) + "</a>" : esc(pr.source)) + "</p>" : "") +
+          (pr.source ? '<p class="project-source">' + esc(pr.sourceLabel || "Source") + ": " + (pr.sourceUrl ? '<a class="text-link" href="' + esc(pr.sourceUrl) + '" target="_blank" rel="noopener">' + esc(pr.source) + "</a>" : esc(pr.source)) + "</p>" : "") +
         "</div>" +
       "</article>"
     );

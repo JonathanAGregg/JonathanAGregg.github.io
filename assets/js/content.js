@@ -15,7 +15,7 @@ window.SITE = {
   email: "jonathan.a.gregg@gmail.com",
   links: {
     linkedin: "https://www.linkedin.com/in/jonathan-a-gregg/",
-    github: "",   // TODO: e.g. "https://github.com/JonathanAGregg" (leave "" to hide)
+    github: "https://github.com/JonathanAGregg",
   },
   // Put your résumé in assets/files/. A PDF is best for recruiters; export one from Word.
   resume: "assets/files/Jonathan_Gregg_Resume.docx",
@@ -188,6 +188,29 @@ window.SITE = {
   // Clicking the image opens a full-screen viewer. Leave a field "" to hide it.
   projects: [
     {
+      id: "commute-impact",
+      kicker: "Data application",
+      title: "Commute Impact Analysis",
+      year: "2026",
+      image: "assets/img/commute-impact.svg",
+      width: 1200,
+      height: 800,
+      alt: "Schematic map showing employee origin points connected to a current office and two potential office locations for commute comparison.",
+      summary:
+        "An open-source Streamlit application for comparing how current and prospective office locations affect employee commute times. It accepts address, ZIP-code, or coordinate inputs; uses Google Maps routing; and exports categorized commute-impact data.",
+      why:
+        "It is a compact example of the work I enjoy: turning a real location-planning question into a reliable, usable data product with clear inputs, validation, and an export people can act on.",
+      facts: [
+        { value: "3", label: "location input paths" },
+        { value: "2", label: "routing modes" },
+        { value: "CSV", label: "exportable report" },
+      ],
+      tools: ["Python", "Streamlit", "Pandas", "Google Maps API", "Folium"],
+      sourceLabel: "Code",
+      source: "View source on GitHub",
+      sourceUrl: "https://github.com/JonathanAGregg/CommuteImpact_Streamlit_App",
+    },
+    {
       id: "helsinki",
       kicker: "Cartography",
       title: "The evolution of Helsinki\u2019s built environment",
@@ -206,6 +229,7 @@ window.SITE = {
         { value: "1550\u20132020", label: "time span" },
       ],
       tools: [], // TODO: e.g. ["Tableau", "Python", "QGIS"]
+      sourceLabel: "Data",
       source: "HSY (Helsinki Region Environmental Services)",
       sourceUrl: "https://www.hsy.fi/",
     },

@@ -194,16 +194,16 @@ window.SITE = {
       title: "Commute Impact Analysis",
       year: "2026",
       image: "assets/img/commute-impact.svg",
-      width: 1200,
-      height: 800,
-      alt: "Schematic map showing employee origin points connected to a current office and two potential office locations for commute comparison.",
+      width: 1600,
+      height: 900,
+      alt: "Illustrative Commute Impact dashboard comparing commute-time distributions and changes for 46 hypothetical employees across a current office and four potential locations.",
       summary:
-        "An open-source Streamlit application for comparing how current and prospective office locations affect employee commute times. It accepts address, ZIP-code, or coordinate inputs; uses Google Maps routing; and exports categorized commute-impact data.",
+        "An open-source Streamlit application for comparing how current and prospective office locations affect employee commute times. The dashboard above uses a clearly labeled hypothetical 46-employee scenario, not client or employee data.",
       why:
         "It is a compact example of the work I enjoy: turning a real location-planning question into a reliable, usable data product with clear inputs, validation, and an export people can act on.",
       facts: [
-        { value: "3", label: "location input paths" },
-        { value: "2", label: "routing modes" },
+        { value: "46", label: "hypothetical employees" },
+        { value: "4", label: "potential locations" },
         { value: "CSV", label: "exportable report" },
       ],
       tools: ["Python", "Streamlit", "Pandas", "Google Maps API", "Folium"],

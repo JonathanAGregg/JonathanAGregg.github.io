@@ -1,28 +1,123 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title description">
-  <title id="title">Commute Impact Analysis</title>
-  <desc id="description">A schematic of employee origins routed to a current office and two potential office locations.</desc>
-  <rect width="1200" height="800" fill="#102a3a"/>
-  <g fill="none" stroke="#58717b" stroke-width="2" opacity=".55">
-    <path d="M0 150C140 100 230 210 370 150S630 60 770 150s260 70 430-10"/>
-    <path d="M0 250c140-50 250 60 390 0s270-100 410 0 260 90 400 0"/>
-    <path d="M0 500c130-80 260 30 410-20s250-140 420-30 240 50 370-30"/>
-    <path d="M0 620c120-70 290 70 420-30s260-100 390 0 260 80 390-10"/>
-  </g>
-  <text x="72" y="98" fill="#f5f8f8" font-family="Georgia, serif" font-size="50">Commute Impact Analysis</text>
-  <text x="76" y="140" fill="#8fc2c9" font-family="monospace" font-size="20" letter-spacing="3">ORIGINS  →  ROUTING  →  LOCATION DECISION</text>
-  <g fill="none" stroke-width="5" stroke-linecap="round" opacity=".8">
-    <path d="M190 290C390 250 550 330 790 340" stroke="#45b8c4"/>
-    <path d="M190 450C380 430 570 440 790 340" stroke="#8fc2c9"/>
-    <path d="M360 590C500 530 640 470 790 340" stroke="#45b8c4"/>
-    <path d="M190 290C410 210 640 210 975 250" stroke="#65d3d8"/>
-    <path d="M190 450C460 390 680 390 975 470" stroke="#65d3d8"/>
-    <path d="M360 590C620 550 760 520 975 470" stroke="#65d3d8"/>
-  </g>
-  <g fill="#f5f8f8" stroke="#102a3a" stroke-width="8">
-    <circle cx="190" cy="290" r="22"/><circle cx="190" cy="450" r="22"/><circle cx="360" cy="590" r="22"/>
-  </g>
-  <g fill="#45b8c4" stroke="#f5f8f8" stroke-width="6"><rect x="760" y="310" width="60" height="60" rx="8"/></g>
-  <g fill="#65d3d8" stroke="#f5f8f8" stroke-width="6"><rect x="945" y="220" width="60" height="60" rx="8"/><rect x="945" y="440" width="60" height="60" rx="8"/></g>
-  <g fill="#f5f8f8" font-family="Arial, sans-serif" font-size="22"><text x="130" y="670">Employee origins</text><text x="730" y="410">Current office</text><text x="900" y="180">Potential office A</text><text x="900" y="545">Potential office B</text></g>
-  <g transform="translate(72 728)" font-family="monospace" font-size="18"><rect width="1056" height="2" fill="#58717b"/><text x="0" y="42" fill="#8fc2c9">STREAMLIT · GOOGLE MAPS API · DATA VALIDATION · CSV EXPORT</text></g>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title description">
+<title id="title">Commute Impact — hypothetical location comparison dashboard</title>
+<desc id="description">An illustrative dashboard compares weekday driving commutes for 46 hypothetical employees between a current office and four potential locations. It shows commute-time distributions, commute reductions and additions, and a summary of the impact at each location.</desc>
+<rect width="1600" height="900" fill="#f7f8f5"/>
+<style>.sans{font-family:Arial,Helvetica,sans-serif}.mono{font-family:Menlo,Consolas,monospace}.label{font-family:Arial,Helvetica,sans-serif;font-size:12px;fill:#50606a}.small{font-family:Arial,Helvetica,sans-serif;font-size:13px;fill:#50606a}.value{font-family:Arial,Helvetica,sans-serif;font-size:24px;font-weight:700;fill:#17232c}.location{font-family:Arial,Helvetica,sans-serif;font-size:17px;font-weight:700;fill:#17232c}.white{font-family:Arial,Helvetica,sans-serif;fill:#fff}.rule{stroke:#d5dcd8;stroke-width:1}</style>
+<text x="52" y="60" class="sans" font-size="35" font-weight="700" fill="#17232c">Commute Impact</text>
+<text x="53" y="87" class="mono" font-size="13" letter-spacing="1.2" fill="#52636c">ILLUSTRATIVE SCENARIO · 46 EMPLOYEES · WEEKDAY DRIVING COMMUTE AT 8 AM</text>
+<rect x="1326" y="39" width="222" height="35" rx="4" fill="#f5e49a"/>
+<text x="1437" y="62" text-anchor="middle" class="mono" font-size="12" font-weight="700" fill="#5a501e">HYPOTHETICAL DATA</text>
+<line x1="52" x2="1548" y1="112" y2="112" class="rule"/>
+<text x="52" y="145" class="sans" font-size="18" font-weight="700" fill="#17232c">Employee distribution by one-way commute time</text>
+<text x="52" y="166" class="small">Each column totals 46 illustrative employees</text>
+<rect x="52" y="183" width="282" height="42" rx="4 4 0 0" fill="#e9d77e"/>
+<text x="68" y="209" class="location" fill="#3f3919">Current office</text>
+<rect x="52" y="225" width="282" height="199" fill="#fff" stroke="#d5dcd8"/>
+<text x="68" y="262" class="label">0–15</text><rect x="129" y="250" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="129" y="250" width="50" height="16" rx="2" fill="#577d8d"/><text x="298" y="262" class="label" font-weight="700">5</text>
+<text x="68" y="289" class="label">15–30</text><rect x="129" y="277" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="129" y="277" width="120" height="16" rx="2" fill="#577d8d"/><text x="298" y="289" class="label" font-weight="700">12</text>
+<text x="68" y="316" class="label">30–45</text><rect x="129" y="304" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="129" y="304" width="160" height="16" rx="2" fill="#577d8d"/><text x="298" y="316" class="label" font-weight="700">16</text>
+<text x="68" y="343" class="label">45–60</text><rect x="129" y="331" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="129" y="331" width="90" height="16" rx="2" fill="#577d8d"/><text x="298" y="343" class="label" font-weight="700">9</text>
+<text x="68" y="370" class="label">60+</text><rect x="129" y="358" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="129" y="358" width="40" height="16" rx="2" fill="#577d8d"/><text x="298" y="370" class="label" font-weight="700">4</text>
+<line x1="68" x2="318" y1="393" y2="393" class="rule"/><text x="68" y="412" class="small">Average commute</text><text x="318" y="412" text-anchor="end" class="sans" font-size="16" font-weight="700" fill="#17232c">35.9 min</text>
+<rect x="352" y="183" width="282" height="42" rx="4 4 0 0" fill="#8db7c6"/>
+<text x="368" y="209" class="location" fill="#102f40">Downtown</text>
+<rect x="352" y="225" width="282" height="199" fill="#fff" stroke="#d5dcd8"/>
+<text x="368" y="262" class="label">0–15</text><rect x="429" y="250" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="429" y="250" width="80" height="16" rx="2" fill="#577d8d"/><text x="598" y="262" class="label" font-weight="700">8</text>
+<text x="368" y="289" class="label">15–30</text><rect x="429" y="277" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="429" y="277" width="150" height="16" rx="2" fill="#577d8d"/><text x="598" y="289" class="label" font-weight="700">15</text>
+<text x="368" y="316" class="label">30–45</text><rect x="429" y="304" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="429" y="304" width="130" height="16" rx="2" fill="#577d8d"/><text x="598" y="316" class="label" font-weight="700">13</text>
+<text x="368" y="343" class="label">45–60</text><rect x="429" y="331" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="429" y="331" width="70" height="16" rx="2" fill="#577d8d"/><text x="598" y="343" class="label" font-weight="700">7</text>
+<text x="368" y="370" class="label">60+</text><rect x="429" y="358" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="429" y="358" width="30" height="16" rx="2" fill="#577d8d"/><text x="598" y="370" class="label" font-weight="700">3</text>
+<line x1="368" x2="618" y1="393" y2="393" class="rule"/><text x="368" y="412" class="small">Average commute</text><text x="618" y="412" text-anchor="end" class="sans" font-size="16" font-weight="700" fill="#17232c">31.6 min</text>
+<rect x="652" y="183" width="282" height="42" rx="4 4 0 0" fill="#8db7c6"/>
+<text x="668" y="209" class="location" fill="#102f40">Cambridge</text>
+<rect x="652" y="225" width="282" height="199" fill="#fff" stroke="#d5dcd8"/>
+<text x="668" y="262" class="label">0–15</text><rect x="729" y="250" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="729" y="250" width="50" height="16" rx="2" fill="#577d8d"/><text x="898" y="262" class="label" font-weight="700">5</text>
+<text x="668" y="289" class="label">15–30</text><rect x="729" y="277" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="729" y="277" width="110" height="16" rx="2" fill="#577d8d"/><text x="898" y="289" class="label" font-weight="700">11</text>
+<text x="668" y="316" class="label">30–45</text><rect x="729" y="304" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="729" y="304" width="140" height="16" rx="2" fill="#577d8d"/><text x="898" y="316" class="label" font-weight="700">14</text>
+<text x="668" y="343" class="label">45–60</text><rect x="729" y="331" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="729" y="331" width="100" height="16" rx="2" fill="#577d8d"/><text x="898" y="343" class="label" font-weight="700">10</text>
+<text x="668" y="370" class="label">60+</text><rect x="729" y="358" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="729" y="358" width="60" height="16" rx="2" fill="#577d8d"/><text x="898" y="370" class="label" font-weight="700">6</text>
+<line x1="668" x2="918" y1="393" y2="393" class="rule"/><text x="668" y="412" class="small">Average commute</text><text x="918" y="412" text-anchor="end" class="sans" font-size="16" font-weight="700" fill="#17232c">37.8 min</text>
+<rect x="952" y="183" width="282" height="42" rx="4 4 0 0" fill="#8db7c6"/>
+<text x="968" y="209" class="location" fill="#102f40">Seaport</text>
+<rect x="952" y="225" width="282" height="199" fill="#fff" stroke="#d5dcd8"/>
+<text x="968" y="262" class="label">0–15</text><rect x="1029" y="250" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="1029" y="250" width="90" height="16" rx="2" fill="#577d8d"/><text x="1198" y="262" class="label" font-weight="700">9</text>
+<text x="968" y="289" class="label">15–30</text><rect x="1029" y="277" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="1029" y="277" width="140" height="16" rx="2" fill="#577d8d"/><text x="1198" y="289" class="label" font-weight="700">14</text>
+<text x="968" y="316" class="label">30–45</text><rect x="1029" y="304" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="1029" y="304" width="120" height="16" rx="2" fill="#577d8d"/><text x="1198" y="316" class="label" font-weight="700">12</text>
+<text x="968" y="343" class="label">45–60</text><rect x="1029" y="331" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="1029" y="331" width="80" height="16" rx="2" fill="#577d8d"/><text x="1198" y="343" class="label" font-weight="700">8</text>
+<text x="968" y="370" class="label">60+</text><rect x="1029" y="358" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="1029" y="358" width="30" height="16" rx="2" fill="#577d8d"/><text x="1198" y="370" class="label" font-weight="700">3</text>
+<line x1="968" x2="1218" y1="393" y2="393" class="rule"/><text x="968" y="412" class="small">Average commute</text><text x="1218" y="412" text-anchor="end" class="sans" font-size="16" font-weight="700" fill="#17232c">31.6 min</text>
+<rect x="1252" y="183" width="282" height="42" rx="4 4 0 0" fill="#8db7c6"/>
+<text x="1268" y="209" class="location" fill="#102f40">Somerville</text>
+<rect x="1252" y="225" width="282" height="199" fill="#fff" stroke="#d5dcd8"/>
+<text x="1268" y="262" class="label">0–15</text><rect x="1329" y="250" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="1329" y="250" width="40" height="16" rx="2" fill="#577d8d"/><text x="1498" y="262" class="label" font-weight="700">4</text>
+<text x="1268" y="289" class="label">15–30</text><rect x="1329" y="277" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="1329" y="277" width="100" height="16" rx="2" fill="#577d8d"/><text x="1498" y="289" class="label" font-weight="700">10</text>
+<text x="1268" y="316" class="label">30–45</text><rect x="1329" y="304" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="1329" y="304" width="150" height="16" rx="2" fill="#577d8d"/><text x="1498" y="316" class="label" font-weight="700">15</text>
+<text x="1268" y="343" class="label">45–60</text><rect x="1329" y="331" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="1329" y="331" width="100" height="16" rx="2" fill="#577d8d"/><text x="1498" y="343" class="label" font-weight="700">10</text>
+<text x="1268" y="370" class="label">60+</text><rect x="1329" y="358" width="156" height="16" rx="2" fill="#edf1ef"/><rect x="1329" y="358" width="70" height="16" rx="2" fill="#577d8d"/><text x="1498" y="370" class="label" font-weight="700">7</text>
+<line x1="1268" x2="1518" y1="393" y2="393" class="rule"/><text x="1268" y="412" class="small">Average commute</text><text x="1518" y="412" text-anchor="end" class="sans" font-size="16" font-weight="700" fill="#17232c">39.5 min</text>
+<text x="52" y="474" class="sans" font-size="18" font-weight="700" fill="#17232c">Change in commute time versus current office</text>
+<text x="52" y="495" class="small">Number of illustrative employees by the size and direction of commute change</text>
+<rect x="52" y="514" width="1496" height="176" fill="#fff" stroke="#d5dcd8"/>
+<text x="295" y="539" text-anchor="middle" class="mono" font-size="11" font-weight="700" fill="#397054">COMMUTE REDUCED</text><text x="919" y="539" text-anchor="middle" class="mono" font-size="11" font-weight="700" fill="#9b4e47">COMMUTE ADDED</text>
+<text x="261" y="561" text-anchor="middle" class="label">20+</text>
+<text x="885" y="561" text-anchor="middle" class="label">20+</text>
+<text x="329" y="561" text-anchor="middle" class="label">15–20</text>
+<text x="953" y="561" text-anchor="middle" class="label">15–20</text>
+<text x="397" y="561" text-anchor="middle" class="label">10–15</text>
+<text x="1021" y="561" text-anchor="middle" class="label">10–15</text>
+<text x="465" y="561" text-anchor="middle" class="label">5–10</text>
+<text x="1089" y="561" text-anchor="middle" class="label">5–10</text>
+<text x="533" y="561" text-anchor="middle" class="label">0–5</text>
+<text x="1157" y="561" text-anchor="middle" class="label">0–5</text>
+<text x="68" y="591" class="small" font-weight="700">Downtown</text>
+<rect x="232" y="574" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.40"/><text x="261" y="590" text-anchor="middle" class="small" font-weight="700" fill="#244936">3</text>
+<rect x="300" y="574" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.53"/><text x="329" y="590" text-anchor="middle" class="small" font-weight="700" fill="#244936">5</text>
+<rect x="368" y="574" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.72"/><text x="397" y="590" text-anchor="middle" class="small" font-weight="700" fill="#244936">8</text>
+<rect x="436" y="574" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.78"/><text x="465" y="590" text-anchor="middle" class="small" font-weight="700" fill="#244936">9</text>
+<rect x="504" y="574" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.53"/><text x="533" y="590" text-anchor="middle" class="small" font-weight="700" fill="#244936">5</text>
+<rect x="856" y="574" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.30"/><text x="885" y="590" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">2</text>
+<rect x="924" y="574" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.48"/><text x="953" y="590" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">5</text>
+<rect x="992" y="574" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.42"/><text x="1021" y="590" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">4</text>
+<rect x="1060" y="574" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.30"/><text x="1089" y="590" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">2</text>
+<rect x="1128" y="574" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.24"/><text x="1157" y="590" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">1</text>
+<text x="68" y="618" class="small" font-weight="700">Cambridge</text>
+<rect x="232" y="601" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.27"/><text x="261" y="617" text-anchor="middle" class="small" font-weight="700" fill="#244936">1</text>
+<rect x="300" y="601" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.33"/><text x="329" y="617" text-anchor="middle" class="small" font-weight="700" fill="#244936">2</text>
+<rect x="368" y="601" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.46"/><text x="397" y="617" text-anchor="middle" class="small" font-weight="700" fill="#244936">4</text>
+<rect x="436" y="601" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.53"/><text x="465" y="617" text-anchor="middle" class="small" font-weight="700" fill="#244936">5</text>
+<rect x="504" y="601" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.46"/><text x="533" y="617" text-anchor="middle" class="small" font-weight="700" fill="#244936">4</text>
+<rect x="856" y="601" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.48"/><text x="885" y="617" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">5</text>
+<rect x="924" y="601" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.66"/><text x="953" y="617" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">8</text>
+<rect x="992" y="601" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.54"/><text x="1021" y="617" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">6</text>
+<rect x="1060" y="601" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.42"/><text x="1089" y="617" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">4</text>
+<rect x="1128" y="601" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.30"/><text x="1157" y="617" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">2</text>
+<text x="68" y="645" class="small" font-weight="700">Seaport</text>
+<rect x="232" y="628" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.33"/><text x="261" y="644" text-anchor="middle" class="small" font-weight="700" fill="#244936">2</text>
+<rect x="300" y="628" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.46"/><text x="329" y="644" text-anchor="middle" class="small" font-weight="700" fill="#244936">4</text>
+<rect x="368" y="628" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.66"/><text x="397" y="644" text-anchor="middle" class="small" font-weight="700" fill="#244936">7</text>
+<rect x="436" y="628" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.78"/><text x="465" y="644" text-anchor="middle" class="small" font-weight="700" fill="#244936">9</text>
+<rect x="504" y="628" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.59"/><text x="533" y="644" text-anchor="middle" class="small" font-weight="700" fill="#244936">6</text>
+<rect x="856" y="628" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.36"/><text x="885" y="644" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">3</text>
+<rect x="924" y="628" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.54"/><text x="953" y="644" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">6</text>
+<rect x="992" y="628" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.42"/><text x="1021" y="644" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">4</text>
+<rect x="1060" y="628" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.30"/><text x="1089" y="644" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">2</text>
+<rect x="1128" y="628" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.24"/><text x="1157" y="644" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">1</text>
+<text x="68" y="672" class="small" font-weight="700">Somerville</text>
+<rect x="232" y="655" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.27"/><text x="261" y="671" text-anchor="middle" class="small" font-weight="700" fill="#244936">1</text>
+<rect x="300" y="655" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.33"/><text x="329" y="671" text-anchor="middle" class="small" font-weight="700" fill="#244936">2</text>
+<rect x="368" y="655" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.40"/><text x="397" y="671" text-anchor="middle" class="small" font-weight="700" fill="#244936">3</text>
+<rect x="436" y="655" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.53"/><text x="465" y="671" text-anchor="middle" class="small" font-weight="700" fill="#244936">5</text>
+<rect x="504" y="655" width="58" height="22" rx="2" fill="#4aaf78" fill-opacity="0.40"/><text x="533" y="671" text-anchor="middle" class="small" font-weight="700" fill="#244936">3</text>
+<rect x="856" y="655" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.66"/><text x="885" y="671" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">8</text>
+<rect x="924" y="655" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.72"/><text x="953" y="671" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">9</text>
+<rect x="992" y="655" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.60"/><text x="1021" y="671" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">7</text>
+<rect x="1060" y="655" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.36"/><text x="1089" y="671" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">3</text>
+<rect x="1128" y="655" width="58" height="22" rx="2" fill="#d76a5e" fill-opacity="0.30"/><text x="1157" y="671" text-anchor="middle" class="small" font-weight="700" fill="#6f302a">2</text>
+<text x="1283" y="550" class="mono" font-size="11" font-weight="700" fill="#52636c">READING THE VIEW</text><text x="1283" y="574" class="small">Darker cells represent more</text><text x="1283" y="593" class="small">employees in that change band.</text><text x="1283" y="627" class="small">Green = time reduced</text><text x="1283" y="647" class="small">Red = time added</text>
+<text x="52" y="735" class="sans" font-size="18" font-weight="700" fill="#17232c">Location impact summary</text>
+<rect x="52" y="753" width="356" height="103" fill="#fff" stroke="#d5dcd8"/><text x="68" y="779" class="location">Downtown</text><text x="68" y="805" class="small">Improved <tspan font-weight="700" fill="#17232c">30</tspan>   Worsened <tspan font-weight="700" fill="#17232c">14</tspan>   Same <tspan font-weight="700" fill="#17232c">2</tspan></text><text x="68" y="836" class="sans" font-size="16" font-weight="700" fill="#36775a">4.3 min reduced</text>
+<rect x="426" y="753" width="356" height="103" fill="#fff" stroke="#d5dcd8"/><text x="442" y="779" class="location">Cambridge</text><text x="442" y="805" class="small">Improved <tspan font-weight="700" fill="#17232c">16</tspan>   Worsened <tspan font-weight="700" fill="#17232c">25</tspan>   Same <tspan font-weight="700" fill="#17232c">5</tspan></text><text x="442" y="836" class="sans" font-size="16" font-weight="700" fill="#ad5148">1.9 min added</text>
+<rect x="800" y="753" width="356" height="103" fill="#fff" stroke="#d5dcd8"/><text x="816" y="779" class="location">Seaport</text><text x="816" y="805" class="small">Improved <tspan font-weight="700" fill="#17232c">28</tspan>   Worsened <tspan font-weight="700" fill="#17232c">16</tspan>   Same <tspan font-weight="700" fill="#17232c">2</tspan></text><text x="816" y="836" class="sans" font-size="16" font-weight="700" fill="#36775a">3.1 min reduced</text>
+<rect x="1174" y="753" width="356" height="103" fill="#fff" stroke="#d5dcd8"/><text x="1190" y="779" class="location">Somerville</text><text x="1190" y="805" class="small">Improved <tspan font-weight="700" fill="#17232c">14</tspan>   Worsened <tspan font-weight="700" fill="#17232c">29</tspan>   Same <tspan font-weight="700" fill="#17232c">3</tspan></text><text x="1190" y="836" class="sans" font-size="16" font-weight="700" fill="#ad5148">3.6 min added</text>
+<text x="52" y="882" class="mono" font-size="11" letter-spacing=".5" fill="#66757d">ILLUSTRATIVE DASHBOARD ONLY · NO CLIENT, EMPLOYER, OR EMPLOYEE DATA</text>
 </svg>

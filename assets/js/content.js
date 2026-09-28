@@ -216,9 +216,9 @@ window.SITE = {
       kicker: "Cartography",
       title: "The evolution of Helsinki\u2019s built environment",
       year: "", // TODO: the year you made it, e.g. "2025"
-      image: "assets/img/helsinki-building-age.jpg",           // 1600px, shown on the page
-      zoomImage: "assets/img/helsinki-building-age-2800.jpg",  // shown in the full-screen viewer
-      fullImage: "assets/img/helsinki-building-age-full.jpg",  // 5600px, behind "Open original"
+      image: "assets/img/helsinki-building-age.jpg?v=20260928",           // 1600px, shown on the page
+      zoomImage: "assets/img/helsinki-building-age-2800.jpg?v=20260928",  // shown in the full-screen viewer
+      fullImage: "assets/img/helsinki-building-age-full.jpg?v=20260928",  // 5600px, behind "Open original"
       loading: "eager",
       width: 1600,
       height: 1428,

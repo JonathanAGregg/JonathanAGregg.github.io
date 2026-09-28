@@ -40,11 +40,13 @@ assets/
   js/content.js         ALL SITE TEXT. Edit this.
   js/main.js            Renders content.js and handles interactions
   js/contours.js        Topographic background (generated; don't hand-edit)
+  js/ma-map.js          Field map base layer: MA town boundaries (generated; don't hand-edit)
   css/styles.css        All styling. Colors and fonts are set at the top in :root
   img/contours.svg      Same background as a standalone image
   img/favicon.svg       Browser-tab icon (JG monogram)
   files/                Résumé download
 tools/make_contours.py  Regenerates the topographic background
+tools/make_ma_map.py    Regenerates the field map base layer from Census data
 .nojekyll               Tells GitHub Pages to serve files as-is
 ```
 
@@ -57,6 +59,8 @@ tools/make_contours.py  Regenerates the topographic background
 | Remove a case study | Delete its block from `work`. |
 | Change the filter buttons | They're built from each case study's `tags`, so edit the tags. |
 | Change the stat strip | `glance` in `content.js` |
+| Edit the field map (About section) | `fieldMap` in `content.js`: add or change `pins` (lat/lon, label position) and `stops` (one row each in the list; stops sharing a `pin` share a marker; leave `pin` empty for remote roles). |
+| Rebuild the field map's base layer | `python3 tools/make_ma_map.py`. It downloads the Census town boundaries and rewrites `assets/js/ma-map.js`. No GIS libraries needed. |
 | Add a side project | Put the image in `assets/img/`, then copy the block in `projects: [...]` and update `image`, `width`, `height` (the image's pixel size), `alt`, and the text. For large images, also set `zoomImage` (the viewer) and `fullImage` ("Open original") to bigger files. |
 | Change colors | Edit the variables at the top of `styles.css`. Light mode is in `:root`; dark mode is in the two dark blocks right below it. Change both dark blocks together. |
 | Change fonts | Edit the Google Fonts `<link>` in `index.html` and the `--serif`, `--sans`, and `--mono` variables. |
@@ -67,6 +71,7 @@ tools/make_contours.py  Regenerates the topographic background
 - **Case studies** open in a side panel. You can page through them with Previous/Next or the ← and → arrow keys, and close with Esc.
   - Each case study has its own shareable link, e.g. `yoursite.com/#work/recruiter-scorecard`. This is useful to include in an application.
 - **Side projects** get a large framed image with a write-up beside it. Clicking the image opens a full-screen viewer, and "Open original" shows the image at full resolution.
+- **Field map** in the About section: all 351 Massachusetts cities and towns from Census boundary files, with pins and a route for each career stop. Hovering shows a live latitude/longitude and town readout, tapping works on phones, and the stop list and pins highlight each other. It also has a scale bar, north arrow, graticule, and data credit. Everything is plain SVG, with no map tiles or API keys.
 - **Filters** narrow the case studies by area.
 - **Light and dark themes:** follows the visitor's system setting, with a toggle that's remembered.
 - **Copy-email button** with a confirmation message.

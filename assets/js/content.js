@@ -314,6 +314,28 @@ window.SITE = {
     { group: "BI & geospatial", items: ["Sigma", "Tableau", "Power BI", "ArcGIS", "Geocoding", "Spatial joins"] },
   ],
 
+  // Field map in the About section: an interactive Massachusetts map of where the work happened.
+  // labelAt places each pin label: ne, nw, se, or sw. Stops that share a `pin` share one marker. Stops without lat/lon (e.g. remote) are listed only.
+  // Base map data comes from tools/make_ma_map.py (U.S. Census town boundaries).
+  fieldMap: {
+    kicker: "Field map",
+    title: "Where the work happened",
+    lede: "Every city and town in Massachusetts, drawn from Census boundary files. Hover the map for coordinates, or pick a stop.",
+    pins: [
+      { id: "amherst", label: "Amherst", lat: 42.3912, lon: -72.5267, labelAt: "ne" },
+      { id: "waltham", label: "Waltham", lat: 42.3765, lon: -71.2356, labelAt: "nw" },
+      { id: "boston", label: "Boston", lat: 42.3601, lon: -71.0589, labelAt: "se" },
+    ],
+    stops: [
+      { pin: "amherst", place: "Amherst, MA", org: "UMass Amherst", what: "B.A. Geography, GIS Certificate", years: "2018" },
+      { pin: "waltham", place: "Waltham, MA", org: "ZoomInfo", what: "Data Implementation Analyst", years: "2019\u20132021" },
+      { pin: "", place: "Remote", org: "Quantum Metric", what: "Data Solutions Analyst, RevOps and FP&A", years: "2021\u20132023" },
+      { pin: "boston", place: "Boston, MA", org: "Cresa", what: "Geospatial analytics for a 230M sq ft portfolio", years: "2024\u20132026" },
+      { pin: "boston", place: "Boston, MA", org: "AdeptID", what: "Senior BI Engineer", years: "2026" },
+    ],
+    offMap: { place: "Helsinki, Finland", coords: "60.1699\u00b0 N, 24.9384\u00b0 E", note: "Side project: ~50K buildings by age", href: "#project-helsinki" },
+  },
+
   about: [
     "I studied geography at UMass Amherst, and I still approach data the way a cartographer approaches a map. It should be accurate, it should be honest about what it leaves out, and someone who wasn't in the room should be able to read it.",
     "My career has moved from client data implementations at ZoomInfo, to revenue analytics at Quantum Metric, to geospatial work at Cresa, to analytics engineering at AdeptID. The common thread is sitting between the people who ask the questions and the systems that hold the answers.",

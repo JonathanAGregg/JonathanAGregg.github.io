@@ -197,6 +197,164 @@
     return '<li><a class="text-link" href="' + esc(l[1]) + '"' + (ext ? ' target="_blank" rel="noopener"' : " download") + ">" + esc(l[0]) + (ext ? " ↗" : " ↓") + "</a></li>";
   }).join("");
 
+  /* ---------- Field map (About section). Base layer from tools/make_ma_map.py ---------- */
+  (function fieldMap() {
+    var fig = $("#field-map"), M = window.MA_MAP, F = S.fieldMap;
+    if (!fig || !M || !F) { if (fig) fig.hidden = true; return; }
+    var P = M.proj, NS = "http://www.w3.org/2000/svg";
+    var toXY = function (lon, lat) {
+      return [((lon - P.lon0) * P.k - P.minx) * P.scale + P.pad, (-lat - P.miny) * P.scale + P.pad];
+    };
+    var toLL = function (x, y) {
+      return [((x - P.pad) / P.scale + P.minx) / P.k + P.lon0, -((y - P.pad) / P.scale + P.miny)];
+    };
+    var fmt = function (lon, lat) {
+      return Math.abs(lat).toFixed(4) + "° " + (lat >= 0 ? "N" : "S") + ", " + Math.abs(lon).toFixed(4) + "° " + (lon >= 0 ? "E" : "W");
+    };
+    var pins = {};
+    F.pins.forEach(function (p) { pins[p.id] = { p: p, xy: toXY(p.lon, p.lat) }; });
+
+    // Graticule every 0.5 degrees, labelled on the whole degrees and halves.
+    var ll0 = toLL(0, M.height), ll1 = toLL(M.width, 0), grat = "", gl = "";
+    for (var lon = Math.ceil(ll0[0] * 2) / 2; lon <= ll1[0]; lon += 0.5) {
+      var gx = toXY(lon, 0)[0];
+      grat += "M" + gx.toFixed(1) + " 0V" + M.height;
+      gl += '<text x="' + (gx + 4).toFixed(1) + '" y="12">' + Math.abs(lon).toFixed(1) + "°W</text>";
+    }
+    for (var lat = Math.ceil(ll0[1] * 2) / 2; lat <= ll1[1]; lat += 0.5) {
+      var gy = toXY(0, lat)[1];
+      grat += "M0 " + gy.toFixed(1) + "H" + M.width;
+      gl += '<text x="' + (M.width - 4) + '" y="' + (gy - 4).toFixed(1) + '" text-anchor="end">' + lat.toFixed(1) + "°N</text>";
+    }
+
+    // Route through the pinned stops in career order, as gentle arcs.
+    var seq = [];
+    F.stops.forEach(function (st) { if (st.pin && seq[seq.length - 1] !== st.pin) seq.push(st.pin); });
+    var route = "";
+    seq.forEach(function (id, i) {
+      var a = pins[id].xy;
+      if (i === 0) { route += "M" + a[0].toFixed(1) + " " + a[1].toFixed(1); return; }
+      var b = pins[seq[i - 1]].xy, mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2 - Math.hypot(a[0] - b[0], a[1] - b[1]) * 0.18;
+      route += "Q" + mx.toFixed(1) + " " + my.toFixed(1) + " " + a[0].toFixed(1) + " " + a[1].toFixed(1);
+    });
+
+    // Scale bar (50 km) and north arrow in the empty southwest corner.
+    var km = 50, barW = km / M.kmPerPx, sx = 40, sy = M.height - 92;
+    var scalebar =
+      '<g class="fm-scale" transform="translate(' + sx + " " + sy + ')">' +
+        '<rect x="0" y="0" width="' + (barW / 2).toFixed(1) + '" height="5"/>' +
+        '<rect class="fm-scale-alt" x="' + (barW / 2).toFixed(1) + '" y="0" width="' + (barW / 2).toFixed(1) + '" height="5"/>' +
+        '<text x="0" y="20">0</text><text x="' + (barW / 2).toFixed(1) + '" y="20" text-anchor="middle">25</text>' +
+        '<text x="' + barW.toFixed(1) + '" y="20" text-anchor="middle">50 km</text>' +
+      "</g>" +
+      '<g class="fm-north" transform="translate(' + (sx + barW + 60).toFixed(1) + " " + (sy - 14) + ')">' +
+        '<path d="M0 -16 L7 8 L0 3 L-7 8 Z"/><text x="0" y="24" text-anchor="middle">N</text>' +
+      "</g>";
+
+    var towns = M.towns.map(function (t, i) {
+      return '<path class="fm-town" d="' + t.d + '" data-i="' + i + '"/>';
+    }).join("");
+    var pinSvg = F.pins.map(function (p) {
+      var xy = pins[p.id].xy, at = p.labelAt || "ne", east = at.indexOf("e") >= 0, north = at.indexOf("n") >= 0;
+      return '<g class="fm-pin" data-pin="' + esc(p.id) + '" transform="translate(' + xy[0].toFixed(1) + " " + xy[1].toFixed(1) + ')">' +
+        '<circle class="fm-pin-ring" r="11"/><rect x="-4" y="-4" width="8" height="8"/>' +
+        '<text x="' + (east ? 10 : -10) + '" y="' + (north ? -10 : 22) + '" text-anchor="' + (east ? "start" : "end") + '">' + esc(p.label) + "</text></g>";
+    }).join("");
+
+    var stopsHtml = F.stops.map(function (st, i) {
+      return '<li><button type="button" class="fm-stop" data-pin="' + esc(st.pin || "") + '" data-stop="' + i + '">' +
+        '<span class="fm-stop-n">' + String(i + 1).padStart(2, "0") + "</span>" +
+        '<span class="fm-stop-body"><span class="fm-stop-org">' + esc(st.org) + '</span><span class="fm-stop-what">' + esc(st.what) + "</span></span>" +
+        '<span class="fm-stop-meta">' + esc(st.years) + "<br>" + esc(st.place) + "</span></button></li>";
+    }).join("");
+    var off = F.offMap;
+
+    fig.innerHTML =
+      '<div class="fm-head"><p class="kicker">' + esc(F.kicker) + '</p><h3 id="field-map-title">' + esc(F.title) + "</h3>" +
+        '<p class="fm-lede">' + esc(F.lede) + "</p></div>" +
+      '<div class="fm-body">' +
+        '<div class="fm-canvas">' +
+          '<svg class="fm-svg" viewBox="0 0 ' + M.width + " " + M.height + '" role="img" aria-label="Map of Massachusetts with career stops in Amherst, Waltham, and Boston">' +
+            '<path class="fm-grat" d="' + grat + '"/><g class="fm-grat-label" aria-hidden="true">' + gl + "</g>" +
+            '<g class="fm-towns">' + towns + "</g>" +
+            '<path class="fm-state" d="' + M.state + '"/>' +
+            '<path class="fm-route" d="' + route + '"/>' +
+            pinSvg + scalebar +
+          "</svg>" +
+          '<p class="fm-readout" aria-live="polite"><span class="fm-readout-ll">' + esc(fmt(F.pins[F.pins.length - 1].lon, F.pins[F.pins.length - 1].lat)) + '</span><span class="fm-readout-town">Boston · Suffolk County</span></p>' +
+        "</div>" +
+        '<div class="fm-side"><ol class="fm-stops">' + stopsHtml + "</ol>" +
+          (off ? '<a class="fm-off" href="' + esc(off.href) + '"><span class="fm-off-k">Off the map ↗</span><span class="fm-off-place">' + esc(off.place) + '</span><span class="fm-off-coords">' + esc(off.coords) + '</span><span class="fm-off-note">' + esc(off.note) + "</span></a>" : "") +
+        "</div>" +
+      "</div>" +
+      '<figcaption class="fm-credit">Boundaries: ' + esc(M.source) + ". Equirectangular projection, cos(φ) scaled at the state’s center. Pins are city-level.</figcaption>";
+
+    var svg = $(".fm-svg", fig), ll = $(".fm-readout-ll", fig), town = $(".fm-readout-town", fig);
+    var townEls = $$(".fm-town", fig), hoverTown = null;
+    var defaultLL = ll.textContent, defaultTown = town.textContent;
+
+    function setActive(pinId, stopIdx) {
+      $$(".fm-pin", fig).forEach(function (g) { g.classList.toggle("on", !!pinId && g.dataset.pin === pinId); });
+      $$(".fm-stop", fig).forEach(function (b) {
+        var on = stopIdx != null ? String(b.dataset.stop) === String(stopIdx) : !!pinId && b.dataset.pin === pinId;
+        b.classList.toggle("on", on);
+      });
+      fig.classList.toggle("has-active", !!pinId || stopIdx != null);
+      if (pinId && pins[pinId]) {
+        var p = pins[pinId].p;
+        ll.textContent = fmt(p.lon, p.lat);
+        town.textContent = p.label + (pinId === "boston" ? " · Suffolk County" : pinId === "waltham" ? " · Middlesex County" : pinId === "amherst" ? " · Hampshire County" : "");
+      } else if (stopIdx != null) {
+        ll.textContent = "—"; town.textContent = F.stops[stopIdx].place;
+      }
+    }
+
+    function eventPoint(e) {
+      var pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+      return pt.matrixTransform(svg.getScreenCTM().inverse());
+    }
+    function onPoint(e) {
+      var p = eventPoint(e), g = toLL(p.x, p.y);
+      ll.textContent = fmt(g[0], g[1]);
+      var t = e.target.closest ? e.target.closest(".fm-town") : null;
+      if (t !== hoverTown) {
+        if (hoverTown) hoverTown.classList.remove("hover");
+        hoverTown = t;
+        if (t) t.classList.add("hover");
+      }
+      var pinEl = e.target.closest ? e.target.closest(".fm-pin") : null;
+      if (pinEl) { setActive(pinEl.dataset.pin); return; }
+      town.textContent = t ? M.towns[+t.dataset.i].n + " · " + M.towns[+t.dataset.i].c : "Off the coast";
+    }
+    svg.addEventListener("pointermove", onPoint);
+    svg.addEventListener("pointerdown", onPoint);   // taps on touch screens
+    svg.addEventListener("pointerleave", function () {
+      if (hoverTown) hoverTown.classList.remove("hover");
+      hoverTown = null;
+      setActive(null);
+      ll.textContent = defaultLL; town.textContent = defaultTown;
+    });
+    fig.addEventListener("pointerover", function (e) {
+      var b = e.target.closest(".fm-stop");
+      if (b) setActive(b.dataset.pin || null, b.dataset.pin ? null : b.dataset.stop);
+    });
+    fig.addEventListener("focusin", function (e) {
+      var b = e.target.closest(".fm-stop");
+      if (b) setActive(b.dataset.pin || null, b.dataset.pin ? null : b.dataset.stop);
+    });
+    $(".fm-side", fig).addEventListener("pointerleave", function () { setActive(null); ll.textContent = defaultLL; town.textContent = defaultTown; });
+    fig.addEventListener("focusout", function (e) { if (!fig.contains(e.relatedTarget)) { setActive(null); ll.textContent = defaultLL; town.textContent = defaultTown; } });
+
+    // Draw the route once the map scrolls into view.
+    var r = $(".fm-route", fig), len = r.getTotalLength ? r.getTotalLength() : 0;
+    r.style.strokeDasharray = len; r.style.strokeDashoffset = len;
+    var draw = function () { fig.classList.add("drawn"); r.style.strokeDashoffset = 0; };
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (en) { if (en[0].isIntersecting) { draw(); io.disconnect(); } }, { threshold: 0.35 });
+      io.observe(fig);
+    } else { draw(); }
+  })();
+
   /* ---------- Side projects + full-screen image viewer ---------- */
   var projects = S.projects || [];
   $("#project-list").innerHTML = projects.map(function (pr) {

@@ -7,7 +7,7 @@ A single-page portfolio for job hunting. It's a plain static site: HTML, CSS, an
 ## 1. Quick start (2 minutes)
 
 1. **Preview it:** double-click `index.html`. It opens in your browser straight from disk.
-   *Or* run a local server, which behaves exactly like the live site:
+   _Or_ run a local server, which behaves exactly like the live site:
    ```bash
    python3 -m http.server 8000
    ```
@@ -52,26 +52,27 @@ tools/make_ma_map.py    Regenerates the field map base layer from Census data
 
 ### Common edits
 
-| I want to… | Do this |
-|---|---|
-| Change the headline or intro | `hero` in `content.js` |
-| Add a case study | Copy a block in `work: [...]` and give it a new unique `id`. It automatically gets a filter tag, a numbered row, and a deep link (`#work/<id>`). |
-| Remove a case study | Delete its block from `work`. |
-| Change the filter buttons | They're built from each case study's `tags`, so edit the tags. |
-| Change the stat strip | `glance` in `content.js` |
-| Edit the field map (About section) | `fieldMap` in `content.js`: add or change `pins` (lat/lon, label position) and `stops` (one row each in the list; stops sharing a `pin` share a marker; leave `pin` empty for remote roles). |
-| Rebuild the field map's base layer | `python3 tools/make_ma_map.py`. It downloads the Census town boundaries and rewrites `assets/js/ma-map.js`. No GIS libraries needed. |
-| Add a side project | Put the image in `assets/img/`, then copy the block in `projects: [...]` and update `image`, `width`, `height` (the image's pixel size), `alt`, and the text. For large images, also set `zoomImage` (the viewer) and `fullImage` ("Open original") to bigger files. |
-| Change colors | Edit the variables at the top of `styles.css`. Light mode is in `:root`; dark mode is in the two dark blocks right below it. Change both dark blocks together. |
-| Change fonts | Edit the Google Fonts `<link>` in `index.html` and the `--serif`, `--sans`, and `--mono` variables. |
-| Get a different contour pattern | `python3 tools/make_contours.py 12` (any number works as a seed; needs `pip install numpy`) |
+| I want to…                            | Do this                                                                                                                                                                                                                                                              |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Change the headline or intro          | `hero` in `content.js`                                                                                                                                                                                                                                               |
+| Add a case study                      | Copy a block in `work: [...]` and give it a new unique `id`. It automatically gets a filter tag, a numbered row, and a deep link (`#work/<id>`).                                                                                                                     |
+| Remove a case study                   | Delete its block from `work`.                                                                                                                                                                                                                                        |
+| Change the filter buttons             | They're built from each case study's `tags`, so edit the tags.                                                                                                                                                                                                       |
+| Change the stat strip                 | `glance` in `content.js`                                                                                                                                                                                                                                             |
+| Edit the field map and career network | `fieldMap` in `content.js`: add or change `pins` (lat/lon, label position) and `stops`. The Census-backed field map appears in the hero; the About network uses every career stop, including remote roles.                                                           |
+| Rebuild the field map's base layer    | `python3 tools/make_ma_map.py`. It downloads the Census town boundaries and rewrites `assets/js/ma-map.js`. No GIS libraries needed.                                                                                                                                 |
+| Add a side project                    | Put the image in `assets/img/`, then copy the block in `projects: [...]` and update `image`, `width`, `height` (the image's pixel size), `alt`, and the text. For large images, also set `zoomImage` (the viewer) and `fullImage` ("Open original") to bigger files. |
+| Change colors                         | Edit the variables at the top of `styles.css`. Light mode is in `:root`; dark mode is in the two dark blocks right below it. Change both dark blocks together.                                                                                                       |
+| Change fonts                          | Edit the Google Fonts `<link>` in `index.html` and the `--serif`, `--sans`, and `--mono` variables.                                                                                                                                                                  |
+| Get a different contour pattern       | `python3 tools/make_contours.py 12` (any number works as a seed; needs `pip install numpy`)                                                                                                                                                                          |
 
 ### Features
 
 - **Case studies** open in a side panel. You can page through them with Previous/Next or the ← and → arrow keys, and close with Esc.
   - Each case study has its own shareable link, e.g. `yoursite.com/#work/recruiter-scorecard`. This is useful to include in an application.
 - **Side projects** get a large framed image with a write-up beside it. Clicking the image opens a full-screen viewer, and "Open original" shows the image at full resolution.
-- **Field map** in the About section: all 351 Massachusetts cities and towns from Census boundary files, with pins and a route for each career stop. Hovering shows a live latitude/longitude and town readout, tapping works on phones, and the stop list and pins highlight each other. It also has a scale bar, north arrow, graticule, and data credit. Everything is plain SVG, with no map tiles or API keys.
+- **Field map** in the hero: all 351 Massachusetts cities and towns from Census boundary files, with pins, a career route, live latitude/longitude, and town readout. Everything is plain SVG, with no map tiles or API keys.
+- **Career network** in About: an interactive, map-inspired SVG that connects each career stop as a layer of the practice. Hover, focus, or select a node to inspect its context; it works by keyboard and honors reduced-motion preferences.
 - **Filters** narrow the case studies by area.
 - **Light and dark themes:** follows the visitor's system setting, with a toggle that's remembered.
 - **Copy-email button** with a confirmation message.
@@ -84,12 +85,14 @@ tools/make_ma_map.py    Regenerates the field map base layer from Census data
 ## 4. Deploying (pick one; all are free)
 
 ### Option A: Netlify Drop (fastest, no git needed)
+
 1. Go to <https://app.netlify.com/drop> and sign in.
 2. Drag this whole folder onto the page. You get a live URL in seconds.
 3. To use a nicer name, open Site settings → Change site name, e.g. `jonathangregg.netlify.app`.
 4. To update the site later, drag the folder onto the site's **Deploys** tab again.
 
 ### Option B: GitHub Pages (best long-term; the code lives in your account)
+
 1. Create a new repository on your **personal** GitHub account, e.g. `portfolio`.
 2. From this folder, run:
    ```bash
@@ -97,14 +100,16 @@ tools/make_ma_map.py    Regenerates the field map base layer from Census data
    git push -u origin main
    ```
    The folder is already a git repository with one commit.
-3. On GitHub, open the repository → Settings → Pages → Source: *Deploy from a branch* → `main` / `(root)` → Save.
+3. On GitHub, open the repository → Settings → Pages → Source: _Deploy from a branch_ → `main` / `(root)` → Save.
 4. The site will be live at `https://<your-username>.github.io/portfolio/` within a minute or two.
 5. To serve it at `https://<your-username>.github.io/` instead, name the repository `<your-username>.github.io`.
 
 ### Option C: Cloudflare Pages or Vercel
+
 Import the GitHub repository and leave both the build command and the framework preset empty. The output directory is `/`.
 
 ### This site's live setup
+
 - **Live at:** <https://jonathanagregg.com>. The old `https://jonathanagregg.github.io` address redirects there automatically.
 - **Hosting:** GitHub Pages from the `main` branch of `JonathanAGregg/JonathanAGregg.github.io`.
 - **Domain:** registered at Cloudflare. DNS records (all set to **DNS only**, gray cloud): four `A` and four `AAAA` records on `@` pointing to GitHub Pages, plus a `CNAME` for `www` → `jonathanagregg.github.io`. A `_github-pages-challenge-JonathanAGregg` TXT record verifies the domain with GitHub.
@@ -112,6 +117,7 @@ Import the GitHub repository and leave both the build command and the framework 
 - **Renewal:** the domain renews yearly at Cloudflare. Keep auto-renew on so the site doesn't go dark.
 
 ### Custom domain (optional, about $12/year)
+
 1. Buy a domain like `jonathangregg.com` from a registrar (Cloudflare, Namecheap, Porkbun).
 2. Add it in your host's domain settings (Netlify: Domain management; GitHub: Settings → Pages → Custom domain).
 3. Follow the DNS records the host shows you. HTTPS is set up automatically.

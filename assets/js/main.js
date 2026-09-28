@@ -197,37 +197,29 @@
     return '<li><a class="text-link" href="' + esc(l[1]) + '"' + (ext ? ' target="_blank" rel="noopener"' : " download") + ">" + esc(l[0]) + (ext ? " ↗" : " ↓") + "</a></li>";
   }).join("");
 
-  /* ---------- Field map (About section). Base layer from tools/make_ma_map.py ---------- */
+  /* ---------- Field map: the hero's evidence layer ---------- */
   (function fieldMap() {
     var fig = $("#field-map"), M = window.MA_MAP, F = S.fieldMap;
     if (!fig || !M || !F) { if (fig) fig.hidden = true; return; }
-    var P = M.proj, NS = "http://www.w3.org/2000/svg";
-    var toXY = function (lon, lat) {
-      return [((lon - P.lon0) * P.k - P.minx) * P.scale + P.pad, (-lat - P.miny) * P.scale + P.pad];
-    };
-    var toLL = function (x, y) {
-      return [((x - P.pad) / P.scale + P.minx) / P.k + P.lon0, -((y - P.pad) / P.scale + P.miny)];
-    };
-    var fmt = function (lon, lat) {
-      return Math.abs(lat).toFixed(4) + "° " + (lat >= 0 ? "N" : "S") + ", " + Math.abs(lon).toFixed(4) + "° " + (lon >= 0 ? "E" : "W");
-    };
+    var P = M.proj;
+    var toXY = function (lon, lat) { return [((lon - P.lon0) * P.k - P.minx) * P.scale + P.pad, (-lat - P.miny) * P.scale + P.pad]; };
+    var toLL = function (x, y) { return [((x - P.pad) / P.scale + P.minx) / P.k + P.lon0, -((y - P.pad) / P.scale + P.miny)]; };
+    var fmt = function (lon, lat) { return Math.abs(lat).toFixed(4) + "° " + (lat >= 0 ? "N" : "S") + ", " + Math.abs(lon).toFixed(4) + "° " + (lon >= 0 ? "E" : "W"); };
     var pins = {};
     F.pins.forEach(function (p) { pins[p.id] = { p: p, xy: toXY(p.lon, p.lat) }; });
 
-    // Graticule every 0.5 degrees, labelled on the whole degrees and halves.
-    var ll0 = toLL(0, M.height), ll1 = toLL(M.width, 0), grat = "", gl = "";
+    var ll0 = toLL(0, M.height), ll1 = toLL(M.width, 0), grat = "", labels = "";
     for (var lon = Math.ceil(ll0[0] * 2) / 2; lon <= ll1[0]; lon += 0.5) {
       var gx = toXY(lon, 0)[0];
       grat += "M" + gx.toFixed(1) + " 0V" + M.height;
-      gl += '<text x="' + (gx + 4).toFixed(1) + '" y="12">' + Math.abs(lon).toFixed(1) + "°W</text>";
+      labels += '<text x="' + (gx + 4).toFixed(1) + '" y="14">' + Math.abs(lon).toFixed(1) + "°W</text>";
     }
     for (var lat = Math.ceil(ll0[1] * 2) / 2; lat <= ll1[1]; lat += 0.5) {
       var gy = toXY(0, lat)[1];
       grat += "M0 " + gy.toFixed(1) + "H" + M.width;
-      gl += '<text x="' + (M.width - 4) + '" y="' + (gy - 4).toFixed(1) + '" text-anchor="end">' + lat.toFixed(1) + "°N</text>";
+      labels += '<text x="' + (M.width - 4) + '" y="' + (gy - 4).toFixed(1) + '" text-anchor="end">' + lat.toFixed(1) + "°N</text>";
     }
 
-    // Route through the pinned stops in career order, as gentle arcs.
     var seq = [];
     F.stops.forEach(function (st) { if (st.pin && seq[seq.length - 1] !== st.pin) seq.push(st.pin); });
     var route = "";
@@ -237,122 +229,94 @@
       var b = pins[seq[i - 1]].xy, mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2 - Math.hypot(a[0] - b[0], a[1] - b[1]) * 0.18;
       route += "Q" + mx.toFixed(1) + " " + my.toFixed(1) + " " + a[0].toFixed(1) + " " + a[1].toFixed(1);
     });
-
-    // Scale bar (50 km) and north arrow in the empty southwest corner.
-    var km = 50, barW = km / M.kmPerPx, sx = 40, sy = M.height - 92;
-    var scalebar =
-      '<g class="fm-scale" transform="translate(' + sx + " " + sy + ')">' +
-        '<rect x="0" y="0" width="' + (barW / 2).toFixed(1) + '" height="5"/>' +
-        '<rect class="fm-scale-alt" x="' + (barW / 2).toFixed(1) + '" y="0" width="' + (barW / 2).toFixed(1) + '" height="5"/>' +
-        '<text x="0" y="20">0</text><text x="' + (barW / 2).toFixed(1) + '" y="20" text-anchor="middle">25</text>' +
-        '<text x="' + barW.toFixed(1) + '" y="20" text-anchor="middle">50 km</text>' +
-      "</g>" +
-      '<g class="fm-north" transform="translate(' + (sx + barW + 60).toFixed(1) + " " + (sy - 14) + ')">' +
-        '<path d="M0 -16 L7 8 L0 3 L-7 8 Z"/><text x="0" y="24" text-anchor="middle">N</text>' +
-      "</g>";
-
-    var towns = M.towns.map(function (t, i) {
-      return '<path class="fm-town" d="' + t.d + '" data-i="' + i + '"/>';
-    }).join("");
+    var towns = M.towns.map(function (t, i) { return '<path class="fm-town" d="' + t.d + '" data-i="' + i + '"/>'; }).join("");
     var pinSvg = F.pins.map(function (p) {
       var xy = pins[p.id].xy, at = p.labelAt || "ne", east = at.indexOf("e") >= 0, north = at.indexOf("n") >= 0;
-      return '<g class="fm-pin" data-pin="' + esc(p.id) + '" transform="translate(' + xy[0].toFixed(1) + " " + xy[1].toFixed(1) + ')">' +
-        '<circle class="fm-pin-ring" r="11"/><rect x="-4" y="-4" width="8" height="8"/>' +
-        '<text x="' + (east ? 10 : -10) + '" y="' + (north ? -10 : 22) + '" text-anchor="' + (east ? "start" : "end") + '">' + esc(p.label) + "</text></g>";
+      return '<g class="fm-pin" data-pin="' + esc(p.id) + '" tabindex="0" role="button" aria-label="Show ' + esc(p.label) + ' coordinates" transform="translate(' + xy[0].toFixed(1) + " " + xy[1].toFixed(1) + ')">' +
+        '<circle class="fm-pin-ring" r="13"/><circle class="fm-pin-core" r="4"/><text x="' + (east ? 13 : -13) + '" y="' + (north ? -13 : 26) + '" text-anchor="' + (east ? "start" : "end") + '">' + esc(p.label) + "</text></g>";
     }).join("");
-
-    var stopsHtml = F.stops.map(function (st, i) {
-      return '<li><button type="button" class="fm-stop" data-pin="' + esc(st.pin || "") + '" data-stop="' + i + '">' +
-        '<span class="fm-stop-n">' + String(i + 1).padStart(2, "0") + "</span>" +
-        '<span class="fm-stop-body"><span class="fm-stop-org">' + esc(st.org) + '</span><span class="fm-stop-what">' + esc(st.what) + "</span></span>" +
-        '<span class="fm-stop-meta">' + esc(st.years) + "<br>" + esc(st.place) + "</span></button></li>";
-    }).join("");
-    var off = F.offMap;
 
     fig.innerHTML =
-      '<div class="fm-head"><p class="kicker">' + esc(F.kicker) + '</p><h3 id="field-map-title">' + esc(F.title) + "</h3>" +
-        '<p class="fm-lede">' + esc(F.lede) + "</p></div>" +
-      '<div class="fm-body">' +
-        '<div class="fm-canvas">' +
-          '<svg class="fm-svg" viewBox="0 0 ' + M.width + " " + M.height + '" role="img" aria-label="Map of Massachusetts with career stops in Amherst, Waltham, and Boston">' +
-            '<path class="fm-grat" d="' + grat + '"/><g class="fm-grat-label" aria-hidden="true">' + gl + "</g>" +
-            '<g class="fm-towns">' + towns + "</g>" +
-            '<path class="fm-state" d="' + M.state + '"/>' +
-            '<path class="fm-route" d="' + route + '"/>' +
-            pinSvg + scalebar +
-          "</svg>" +
-          '<p class="fm-readout" aria-live="polite"><span class="fm-readout-ll">' + esc(fmt(F.pins[F.pins.length - 1].lon, F.pins[F.pins.length - 1].lat)) + '</span><span class="fm-readout-town">Boston · Suffolk County</span></p>' +
-        "</div>" +
-        '<div class="fm-side"><ol class="fm-stops">' + stopsHtml + "</ol>" +
-          (off ? '<a class="fm-off" href="' + esc(off.href) + '"><span class="fm-off-k">Off the map ↗</span><span class="fm-off-place">' + esc(off.place) + '</span><span class="fm-off-coords">' + esc(off.coords) + '</span><span class="fm-off-note">' + esc(off.note) + "</span></a>" : "") +
-        "</div>" +
+      '<div class="fm-hero-head"><div><p class="kicker">' + esc(F.kicker) + '</p><h2 id="field-map-title">' + esc(F.title) + '</h2></div><p>' + esc(F.lede) + "</p></div>" +
+      '<div class="fm-canvas">' +
+        '<svg class="fm-svg" viewBox="0 0 ' + M.width + " " + M.height + '" role="img" aria-label="Interactive map of Massachusetts with career stops in Amherst, Waltham, and Boston">' +
+          '<path class="fm-grat" d="' + grat + '"/><g class="fm-grat-label" aria-hidden="true">' + labels + "</g><g class=\"fm-towns\">" + towns + "</g>" +
+          '<path class="fm-state" d="' + M.state + '"/><path class="fm-route" d="' + route + '"/>' + pinSvg +
+        "</svg>" +
+        '<p class="fm-readout" aria-live="polite"><span class="fm-readout-ll">' + esc(fmt(F.pins[F.pins.length - 1].lon, F.pins[F.pins.length - 1].lat)) + '</span><span class="fm-readout-town">Boston · Suffolk County</span></p>' +
       "</div>" +
-      '<figcaption class="fm-credit">Boundaries: ' + esc(M.source) + ". Equirectangular projection, cos(φ) scaled at the state’s center. Pins are city-level.</figcaption>";
+      '<figcaption class="fm-credit">Field notes · Census boundaries · Hover or focus a point to inspect the source coordinates.</figcaption>';
 
-    var svg = $(".fm-svg", fig), ll = $(".fm-readout-ll", fig), town = $(".fm-readout-town", fig);
-    var townEls = $$(".fm-town", fig), hoverTown = null;
+    var svg = $(".fm-svg", fig), ll = $(".fm-readout-ll", fig), town = $(".fm-readout-town", fig), hoverTown = null;
     var defaultLL = ll.textContent, defaultTown = town.textContent;
-
-    function setActive(pinId, stopIdx) {
+    function setActive(pinId) {
       $$(".fm-pin", fig).forEach(function (g) { g.classList.toggle("on", !!pinId && g.dataset.pin === pinId); });
-      $$(".fm-stop", fig).forEach(function (b) {
-        var on = stopIdx != null ? String(b.dataset.stop) === String(stopIdx) : !!pinId && b.dataset.pin === pinId;
-        b.classList.toggle("on", on);
-      });
-      fig.classList.toggle("has-active", !!pinId || stopIdx != null);
+      fig.classList.toggle("has-active", !!pinId);
       if (pinId && pins[pinId]) {
         var p = pins[pinId].p;
         ll.textContent = fmt(p.lon, p.lat);
-        town.textContent = p.label + (pinId === "boston" ? " · Suffolk County" : pinId === "waltham" ? " · Middlesex County" : pinId === "amherst" ? " · Hampshire County" : "");
-      } else if (stopIdx != null) {
-        ll.textContent = "—"; town.textContent = F.stops[stopIdx].place;
+        town.textContent = p.label + (pinId === "boston" ? " · Suffolk County" : pinId === "waltham" ? " · Middlesex County" : " · Hampshire County");
       }
-    }
-
-    function eventPoint(e) {
-      var pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
-      return pt.matrixTransform(svg.getScreenCTM().inverse());
     }
     function onPoint(e) {
-      var p = eventPoint(e), g = toLL(p.x, p.y);
+      var pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+      var p = pt.matrixTransform(svg.getScreenCTM().inverse()), g = toLL(p.x, p.y);
       ll.textContent = fmt(g[0], g[1]);
-      var t = e.target.closest ? e.target.closest(".fm-town") : null;
-      if (t !== hoverTown) {
-        if (hoverTown) hoverTown.classList.remove("hover");
-        hoverTown = t;
-        if (t) t.classList.add("hover");
-      }
-      var pinEl = e.target.closest ? e.target.closest(".fm-pin") : null;
-      if (pinEl) { setActive(pinEl.dataset.pin); return; }
-      town.textContent = t ? M.towns[+t.dataset.i].n + " · " + M.towns[+t.dataset.i].c : "Off the coast";
+      var target = e.target.closest ? e.target.closest(".fm-town") : null;
+      if (target !== hoverTown) { if (hoverTown) hoverTown.classList.remove("hover"); hoverTown = target; if (target) target.classList.add("hover"); }
+      var pin = e.target.closest ? e.target.closest(".fm-pin") : null;
+      if (pin) { setActive(pin.dataset.pin); return; }
+      town.textContent = target ? M.towns[+target.dataset.i].n + " · " + M.towns[+target.dataset.i].c : "Off the coast";
     }
     svg.addEventListener("pointermove", onPoint);
-    svg.addEventListener("pointerdown", onPoint);   // taps on touch screens
-    svg.addEventListener("pointerleave", function () {
-      if (hoverTown) hoverTown.classList.remove("hover");
-      hoverTown = null;
-      setActive(null);
-      ll.textContent = defaultLL; town.textContent = defaultTown;
-    });
-    fig.addEventListener("pointerover", function (e) {
-      var b = e.target.closest(".fm-stop");
-      if (b) setActive(b.dataset.pin || null, b.dataset.pin ? null : b.dataset.stop);
-    });
-    fig.addEventListener("focusin", function (e) {
-      var b = e.target.closest(".fm-stop");
-      if (b) setActive(b.dataset.pin || null, b.dataset.pin ? null : b.dataset.stop);
-    });
-    $(".fm-side", fig).addEventListener("pointerleave", function () { setActive(null); ll.textContent = defaultLL; town.textContent = defaultTown; });
+    svg.addEventListener("pointerdown", onPoint);
+    svg.addEventListener("pointerleave", function () { if (hoverTown) hoverTown.classList.remove("hover"); hoverTown = null; setActive(null); ll.textContent = defaultLL; town.textContent = defaultTown; });
+    fig.addEventListener("focusin", function (e) { var pin = e.target.closest(".fm-pin"); if (pin) setActive(pin.dataset.pin); });
     fig.addEventListener("focusout", function (e) { if (!fig.contains(e.relatedTarget)) { setActive(null); ll.textContent = defaultLL; town.textContent = defaultTown; } });
+    fig.addEventListener("keydown", function (e) { if ((e.key === "Enter" || e.key === " ") && e.target.closest(".fm-pin")) { e.preventDefault(); setActive(e.target.closest(".fm-pin").dataset.pin); } });
 
-    // Draw the route once the map scrolls into view.
     var r = $(".fm-route", fig), len = r.getTotalLength ? r.getTotalLength() : 0;
     r.style.strokeDasharray = len; r.style.strokeDashoffset = len;
     var draw = function () { fig.classList.add("drawn"); r.style.strokeDashoffset = 0; };
-    if ("IntersectionObserver" in window) {
-      var io = new IntersectionObserver(function (en) { if (en[0].isIntersecting) { draw(); io.disconnect(); } }, { threshold: 0.35 });
-      io.observe(fig);
-    } else { draw(); }
+    if ("IntersectionObserver" in window) { var io = new IntersectionObserver(function (en) { if (en[0].isIntersecting) { draw(); io.disconnect(); } }, { threshold: 0.35 }); io.observe(fig); } else { draw(); }
+  })();
+
+  /* ---------- Career network: an interactive, map-inspired data portrait ---------- */
+  (function careerNetwork() {
+    var fig = $("#career-network"), F = S.fieldMap;
+    if (!fig || !F) { if (fig) fig.hidden = true; return; }
+    var positions = [[102, 306], [258, 134], [422, 300], [605, 132], [744, 280]];
+    var stages = ["foundation", "implementation", "operations", "spatial analysis", "analytics engineering"];
+    var nodes = F.stops.map(function (stop, i) { return { stop: stop, x: positions[i][0], y: positions[i][1], stage: stages[i] }; });
+    var links = nodes.slice(1).map(function (node, i) {
+      var prev = nodes[i], mid = (prev.x + node.x) / 2;
+      return '<path class="cn-link" data-link="' + i + '" d="M' + prev.x + " " + prev.y + " C" + mid + " " + (prev.y - 100) + "," + mid + " " + (node.y + 100) + "," + node.x + " " + node.y + '"/>';
+    }).join("");
+    var nodeSvg = nodes.map(function (node, i) {
+      return '<g class="cn-node" data-node="' + i + '" tabindex="0" role="button" aria-pressed="false" aria-label="' + esc(node.stop.org) + ', ' + esc(node.stop.years) + '" transform="translate(' + node.x + " " + node.y + ')">' +
+        '<circle class="cn-pulse" r="26"/><circle class="cn-halo" r="15"/><circle class="cn-core" r="6"/>' +
+        '<text class="cn-number" y="4" text-anchor="middle">' + String(i + 1).padStart(2, "0") + '</text><text class="cn-label" x="0" y="-34" text-anchor="middle">' + esc(node.stop.org) + "</text>" +
+      "</g>";
+    }).join("");
+    fig.innerHTML =
+      '<div class="cn-head"><div><p class="kicker">Working map</p><h3 id="career-network-title">A practice built in layers</h3></div><p>Not a geography lesson: a living map of the disciplines that make reliable data work possible. Explore a point to follow the signal.</p></div>' +
+      '<div class="cn-body"><div class="cn-stage"><svg class="cn-svg" viewBox="0 0 840 420" role="group" aria-label="Interactive career network. Select a node for its details."><g class="cn-grid" aria-hidden="true"><path d="M20 80H820M20 210H820M20 340H820"/><path d="M105 20V400M265 20V400M425 20V400M585 20V400M745 20V400"/></g><g class="cn-links" aria-hidden="true">' + links + '</g><g class="cn-nodes">' + nodeSvg + "</g></svg>" +
+        '<p class="cn-axis cn-axis-x">TIME / EXPERIENCE</p><p class="cn-axis cn-axis-y">DEPTH OF PRACTICE</p></div>' +
+        '<aside class="cn-detail" aria-live="polite"><p class="cn-detail-kicker">Data point <span>01</span></p><h4>' + esc(nodes[0].stop.org) + '</h4><p class="cn-detail-role">' + esc(nodes[0].stop.what) + '</p><p class="cn-detail-meta">' + esc(nodes[0].stop.years) + " · " + esc(nodes[0].stop.place) + '</p><p class="cn-detail-stage">' + esc(nodes[0].stage) + "</p></aside></div>" +
+      '<figcaption>Each point is a distinct perspective brought to the work: context, implementation, operations, spatial thinking, and governed analytics.</figcaption>';
+    var detail = $(".cn-detail", fig);
+    function setActive(index) {
+      var node = nodes[index];
+      $$(".cn-node", fig).forEach(function (el) { var on = +el.dataset.node === index; el.classList.toggle("on", on); el.setAttribute("aria-pressed", String(on)); });
+      $$(".cn-link", fig).forEach(function (el, i) { el.classList.toggle("on", i === index || i === index - 1); });
+      detail.innerHTML = '<p class="cn-detail-kicker">Data point <span>' + String(index + 1).padStart(2, "0") + '</span></p><h4>' + esc(node.stop.org) + '</h4><p class="cn-detail-role">' + esc(node.stop.what) + '</p><p class="cn-detail-meta">' + esc(node.stop.years) + " · " + esc(node.stop.place) + '</p><p class="cn-detail-stage">' + esc(node.stage) + "</p>";
+    }
+    fig.addEventListener("pointerover", function (e) { var node = e.target.closest(".cn-node"); if (node) setActive(+node.dataset.node); });
+    fig.addEventListener("focusin", function (e) { var node = e.target.closest(".cn-node"); if (node) setActive(+node.dataset.node); });
+    fig.addEventListener("click", function (e) { var node = e.target.closest(".cn-node"); if (node) setActive(+node.dataset.node); });
+    fig.addEventListener("keydown", function (e) { var node = e.target.closest(".cn-node"); if (node && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); setActive(+node.dataset.node); } });
+    setActive(0);
+    if ("IntersectionObserver" in window) { var io = new IntersectionObserver(function (en) { if (en[0].isIntersecting) { fig.classList.add("drawn"); io.disconnect(); } }, { threshold: 0.25 }); io.observe(fig); } else { fig.classList.add("drawn"); }
   })();
 
   /* ---------- Side projects + full-screen image viewer ---------- */

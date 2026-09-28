@@ -316,7 +316,7 @@ button { color: inherit; font: inherit; cursor: pointer; }
   .hero-field-map { width: min(100%, 34rem); }
   .fm-hero-head { grid-template-columns: 1fr; gap: .75rem; }
   .glance { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .glance-item { padding: .9rem .9rem .9rem 0; border-bottom: 1px solid var(--rule); }
+  .glance-item, .glance-item + .glance-item { padding: .9rem .9rem .9rem 0; border-bottom: 1px solid var(--rule); border-left: 0; }
   .glance-item:nth-child(even) { padding-left: .9rem; border-left: 1px solid var(--rule); }
   .two-col { grid-template-columns: 1fr; gap: 0; }
   .two-col .section-head { position: static; }

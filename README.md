@@ -12,14 +12,14 @@ A single-page portfolio for job hunting. It's a plain static site: HTML, CSS, an
    python3 -m http.server 8000
    ```
    Then open <http://localhost:8000>.
-2. **Edit the words:** open `assets/js/content.js` in any text editor. All the site's content is in that one file.
+2. **Edit the words:** use `assets/js/content.js` for enhanced case-study, experience, project, and map content. Also update the matching hero and SEO-critical static copy in `index.html`; it intentionally remains readable without JavaScript.
 3. **Deploy it:** see section 4. The fastest option is Netlify Drop, which needs no account setup beyond signing in.
 
 ---
 
 ## 2. Before you publish (checklist)
 
-Search `content.js` for `TODO`.
+Review every public claim in `content.js` and the matching static copy in `index.html` before publishing.
 
 - [ ] **LinkedIn URL:** `links.linkedin`
 - [ ] **GitHub URL:** `links.github`. Leave it as `""` to hide the link.
@@ -34,45 +34,39 @@ Search `content.js` for `TODO`.
 ## 3. How it's organized
 
 ```
-index.html              Page skeleton (sections, nav, case-study panel)
+index.html              Static document: positioning, SEO metadata, and no-JavaScript fallbacks
 404.html                "Page not found" page, used by most hosts automatically
 assets/
-  js/content.js         ALL SITE TEXT. Edit this.
-  js/main.js            Renders content.js and handles interactions
-  js/contours.js        Topographic background (generated; don't hand-edit)
+  js/content.js         Case-study, experience, project, and map content
+  js/main.js            Enhances the static page with dialogs, filters, maps, and controls
   js/ma-map.js          Field map base layer: MA town boundaries (generated; don't hand-edit)
   css/styles.css        All styling. Colors and fonts are set at the top in :root
-  img/contours.svg      Same background as a standalone image
   img/favicon.svg       Browser-tab icon (JG monogram)
   files/                Résumé download
-tools/make_contours.py  Regenerates the topographic background
 tools/make_ma_map.py    Regenerates the field map base layer from Census data
 .nojekyll               Tells GitHub Pages to serve files as-is
 ```
 
 ### Common edits
 
-| I want to…                            | Do this                                                                                                                                                                                                                                                              |
-| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Change the headline or intro          | `hero` in `content.js`                                                                                                                                                                                                                                               |
-| Add a case study                      | Copy a block in `work: [...]` and give it a new unique `id`. It automatically gets a filter tag, a numbered row, and a deep link (`#work/<id>`).                                                                                                                     |
-| Remove a case study                   | Delete its block from `work`.                                                                                                                                                                                                                                        |
-| Change the filter buttons             | They're built from each case study's `tags`, so edit the tags.                                                                                                                                                                                                       |
-| Change the stat strip                 | `glance` in `content.js`                                                                                                                                                                                                                                             |
-| Edit the field map and career network | `fieldMap` in `content.js`: add or change `pins` (lat/lon, label position) and `stops`. The Census-backed field map appears in the hero; the About network uses every career stop, including remote roles.                                                           |
-| Rebuild the field map's base layer    | `python3 tools/make_ma_map.py`. It downloads the Census town boundaries and rewrites `assets/js/ma-map.js`. No GIS libraries needed.                                                                                                                                 |
-| Add a side project                    | Put the image in `assets/img/`, then copy the block in `projects: [...]` and update `image`, `width`, `height` (the image's pixel size), `alt`, and the text. For large images, also set `zoomImage` (the viewer) and `fullImage` ("Open original") to bigger files. |
-| Change colors                         | Edit the variables at the top of `styles.css`. Light mode is in `:root`; dark mode is in the two dark blocks right below it. Change both dark blocks together.                                                                                                       |
-| Change fonts                          | Edit the Google Fonts `<link>` in `index.html` and the `--serif`, `--sans`, and `--mono` variables.                                                                                                                                                                  |
-| Get a different contour pattern       | `python3 tools/make_contours.py 12` (any number works as a seed; needs `pip install numpy`)                                                                                                                                                                          |
+| I want to…                         | Do this                                                                                                                                                                                                                                |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Change the hero copy               | Update the matching static copy in `index.html` and the `hero` object in `content.js`. The static copy is intentional for SEO and no-JavaScript visitors.                                                                              |
+| Add a case study                   | Copy a block in `work: [...]`, give it a unique `id`, and set `featured: true` only when it belongs in the three primary case studies. Use the `constraints`, `architecture`, and `validation` fields where supported by the evidence. |
+| Change the case-study filters      | They are built from the featured case studies' `tags`.                                                                                                                                                                                 |
+| Change the stat strip              | `glance` in `content.js`                                                                                                                                                                                                               |
+| Edit the field map                 | `fieldMap` in `content.js`: add or change `pins` (lat/lon, label position) and `stops`. The Census-backed map appears in About.                                                                                                        |
+| Rebuild the field map's base layer | `python3 tools/make_ma_map.py`. It downloads the Census town boundaries and rewrites `assets/js/ma-map.js`. No GIS libraries needed.                                                                                                   |
+| Add an independent project         | Put the image in `assets/img/`, then copy the block in `projects: [...]` and update `image`, `width`, `height`, `alt`, and the text. For large images, set `zoomImage` and `fullImage`.                                                |
+| Change colors or fonts             | Edit the CSS variables at the top of `assets/css/styles.css`.                                                                                                                                                                          |
 
 ### Features
 
 - **Case studies** open in a side panel. You can page through them with Previous/Next or the ← and → arrow keys, and close with Esc.
   - Each case study has its own shareable link, e.g. `yoursite.com/#work/recruiter-scorecard`. This is useful to include in an application.
 - **Side projects** get a large framed image with a write-up beside it. Clicking the image opens a full-screen viewer, and "Open original" shows the image at full resolution.
-- **Field map** in the hero: all 351 Massachusetts cities and towns from Census boundary files, with pins, a career route, live latitude/longitude, and town readout. Everything is plain SVG, with no map tiles or API keys.
-- **Career network** in About: an interactive, map-inspired SVG that connects each career stop as a layer of the practice. Hover, focus, or select a node to inspect its context; it works by keyboard and honors reduced-motion preferences.
+- **Static-first positioning:** the hero, representative case studies, experience summary, About copy, metadata, and Person/ProfilePage structured data are present in `index.html`. JavaScript adds interaction rather than supplying the site’s meaning.
+- **Field map** in About: all 351 Massachusetts cities and towns from Census boundary files, with pins, a career route, live latitude/longitude, and town readout. Everything is plain SVG, with no map tiles or API keys.
 - **Filters** narrow the case studies by area.
 - **Light and dark themes:** follows the visitor's system setting, with a toggle that's remembered.
 - **Copy-email button** with a confirmation message.

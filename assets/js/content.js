@@ -1,16 +1,15 @@
 /*
- * SITE CONTENT: edit this file to change what the site says.
- * You don't need to touch index.html or main.js for normal updates.
+ * ENHANCED CONTENT: edit this file for case studies, experience, projects, and map details.
+ * The hero and SEO-critical copy also exists in index.html so it remains available without JavaScript.
  *
- * Search for "TODO" to find placeholders you still need to fill in.
  * Keep client names, internal metrics, and anything confidential out of here:
  * this file is public once the site is deployed.
  */
 window.SITE = {
   name: "Jonathan Gregg",
-  role: "Analytics Engineer",
+  role: "Senior BI & Analytics Engineer",
   location: "Boston, MA",
-  availability: "Available now · Boston or remote",
+  availability: "Boston, MA · Open to senior BI & analytics engineering roles",
 
   email: "jonathan.a.gregg@gmail.com",
   links: {
@@ -21,9 +20,9 @@ window.SITE = {
   resume: "assets/files/Jonathan_Gregg_Resume.docx",
 
   hero: {
-    headline: "I build metrics people can trust.",
+    headline: "Senior BI & Analytics Engineer",
     intro:
-      "Analytics engineer with seven years of turning messy operational data into governed, tested data products, across workforce tech, SaaS, and commercial real estate.",
+      "I build trusted data models, metrics, and reporting systems that turn messy operational data into decisions.",
   },
 
   glance: [
@@ -37,12 +36,13 @@ window.SITE = {
   work: [
     {
       id: "recruiter-scorecard",
-      title: "An executive scorecard that ended the headcount debate",
+      featured: true,
+      title: "A governed headcount model for executive recruiting decisions",
       org: "AdeptID",
       year: "2026",
       tags: ["Analytics engineering", "BI"],
       summary:
-        "Replaced a hand-built executive workbook with a governed dbt semantic layer measuring recruiter performance against Finance's ramp targets.",
+        "Replaced a hand-built executive workbook with a governed dbt semantic layer, giving Finance, Operations, and leadership one definition of recruiter headcount.",
       metrics: [
         { value: "168", label: "dbt builds passing" },
         { value: "3", label: "business lines covered" },
@@ -50,19 +50,25 @@ window.SITE = {
       ],
       problem:
         "Leadership tracked recruiter ramp in a spreadsheet, and Finance, Operations, and brand leads each counted “on assignment” differently. The same question produced different answers depending on who built the report.",
+      constraints: [
+        "Finance, Operations, and brand leads each counted “on assignment” differently.",
+        "The replacement had to preserve useful workbook scenarios while making the warehouse the source of truth.",
+      ],
       approach: [
         "Gathered requirements with Finance and People, then wrote the metric definitions and a decision log before writing any SQL.",
-        "Standardized one headcount definition (“as of the most recently completed Saturday”), encoded it in a dbt macro, and announced it to team leads.",
-        "Built segmentation, fact, weekly-snapshot, and projection models, plus Sigma views with downside, baseline, and upside scenarios.",
-        "Added parity tests against the source workbook, which caught four correctness bugs, including a null-ID headcount undercount and a flipped gap sign.",
+        "Standardized one headcount definition (“as of the most recently completed Saturday”) and encoded it in a dbt macro.",
+        "Built segmentation, fact, weekly-snapshot, and projection models, with Sigma views for downside, baseline, and upside scenarios.",
       ],
+      architecture: ["Operational recruiting data", "dbt facts & snapshots", "Governed headcount metric", "Sigma scenario views", "Executive decision"],
+      validation: "Added parity tests against the source workbook, catching four correctness bugs before release, including a null-ID headcount undercount and a flipped gap sign.",
       outcome:
         "Merged to production as the executive recruiter scorecard. Every downstream report now uses the same definition.",
       stack: ["dbt", "Snowflake", "Sigma", "Dagster", "Great Expectations", "pytest"],
     },
     {
       id: "metrics-library",
-      title: "One metrics library, and the history to back it",
+      featured: true,
+      title: "A metric layer that can explain the past as well as the present",
       org: "AdeptID",
       year: "2026",
       tags: ["Analytics engineering", "Data platform"],
@@ -75,12 +81,17 @@ window.SITE = {
       ],
       problem:
         "Metric definitions lived in documents and spreadsheets, baselines came up empty in every warehouse view, and funnel metrics silently lost anything that entered and left within the same period.",
-      approach: [
-        "Designed the warehouse schema and deploy order, with access grants that re-apply themselves on every run so a dropped permission repairs itself.",
-        "Moved baseline and target calculations into the same engine that computes the facts, so the warehouse and the workbook can't disagree.",
-        "Built an immutable daily snapshot that stores match scores before any threshold is applied, so past dates can be re-evaluated later.",
-        "Added accumulate-style weekly and monthly snapshots with idempotent, transactional writes.",
+      constraints: [
+        "Definitions lived in documents and spreadsheets, while warehouse views lacked the history needed to rebuild a prior period.",
+        "Funnel reporting had to retain records that entered and left inside the same reporting period.",
       ],
+      approach: [
+        "Designed the warehouse schema and deploy order, with access grants that re-apply themselves on every run.",
+        "Moved baseline and target calculations into the same engine that computes the facts, so the warehouse and workbook cannot disagree.",
+        "Built immutable daily and accumulate-style weekly and monthly snapshots with idempotent, transactional writes.",
+      ],
+      architecture: ["Operational source data", "Snowflake warehouse", "Metrics engine & snapshots", "Governed metric views", "Executive reporting"],
+      validation: "Stored match scores before thresholds are applied, allowing past dates to be re-evaluated and historical capacity and funnel metrics to be rebuilt.",
       outcome:
         "Past marketplace capacity and funnel metrics can now be rebuilt, and the monthly executive dashboard runs on governed views.",
       stack: ["Python", "Dagster", "Snowflake", "dbt", "pytest"],
@@ -113,7 +124,8 @@ window.SITE = {
     },
     {
       id: "match-outcomes",
-      title: "Defining “a good match” for an AI product",
+      featured: true,
+      title: "A measurement contract for an AI matching product",
       org: "AdeptID",
       year: "2026",
       tags: ["Analytics engineering"],
@@ -126,11 +138,17 @@ window.SITE = {
       ],
       problem:
         "No one had agreed on what counted as a successful match, so the product's performance couldn't be measured.",
+      constraints: [
+        "Product performance could not be measured until stakeholders agreed on what counted as a successful match.",
+        "The model needed to preserve ownership boundaries between engineering's pipeline and analytics' measurement logic.",
+      ],
       approach: [
         "Compared two outcome-labeling methods on real data and published the analysis for Product, Engineering, and Finance.",
-        "Mapped seven recruiting statuses to positive, negative, and neutral outcomes, deferring edge cases on purpose.",
-        "Split ownership so engineering owned the pipeline and analytics owned the models, then built a Redshift-to-Snowflake sync.",
+        "Mapped seven recruiting statuses to positive, negative, and neutral outcomes, deliberately deferring edge cases.",
+        "Built a Redshift-to-Snowflake sync while keeping engineering responsible for the pipeline and analytics responsible for the models.",
       ],
+      architecture: ["Product & recruiting events", "Redshift to Snowflake sync", "dbt outcome models", "Validated fact table", "Product performance reporting"],
+      validation: "Validated more than 500K candidate-job pairs and checked the model for join fan-out before it fed the product reporting surface.",
       outcome:
         "A validated fact table ready to feed the product dashboard, with labeling rules everyone had signed off on.",
       stack: ["dbt", "Redshift", "Snowflake", "Dagster", "SQL"],
@@ -215,7 +233,7 @@ window.SITE = {
       id: "helsinki",
       kicker: "Cartography",
       title: "The evolution of Helsinki\u2019s built environment",
-      year: "", // TODO: the year you made it, e.g. "2025"
+      year: "",
       image: "assets/img/helsinki-building-age.jpg?v=20260928",           // 1600px, shown on the page
       zoomImage: "assets/img/helsinki-building-age-2800.jpg?v=20260928",  // shown in the full-screen viewer
       fullImage: "assets/img/helsinki-building-age-full.jpg?v=20260928",  // 5600px, behind "Open original"
@@ -232,7 +250,7 @@ window.SITE = {
         { value: "11", label: "construction eras" },
         { value: "1550\u20132020", label: "time span" },
       ],
-      tools: [], // TODO: e.g. ["Tableau", "Python", "QGIS"]
+      tools: [],
       sourceLabel: "Data",
       source: "HSY (Helsinki Region Environmental Services)",
       sourceUrl: "https://www.hsy.fi/",
@@ -241,20 +259,20 @@ window.SITE = {
 
   principles: [
     {
-      title: "Definitions before dashboards",
-      body: "Most reporting fights are really disagreements about a definition. I write the definition down and get sign-off before building the chart.",
+      title: "Define",
+      body: "Turn an ambiguous business question into a written metric contract: owner, grain, inclusion rules, and decision it supports.",
     },
     {
-      title: "Test against the source of truth",
-      body: "Parity checks against the report people already trust, row counts, and fan-out tests. If a number changes, I want to know why before anyone else sees it.",
+      title: "Model",
+      body: "Put reusable business logic in the warehouse, where definitions can be versioned, reviewed, and shared beyond one report.",
     },
     {
-      title: "Roll out slowly, roll back fast",
-      body: "Dry runs, canaries, rollback snapshots, and a single-record test before a bulk update. Boring launches are the goal.",
+      title: "Validate",
+      body: "Use source parity, row counts, fan-out checks, and stakeholder review to explain every meaningful number before release.",
     },
     {
-      title: "Own the mistake, fix the process",
-      body: "When I break something, I say so, trace it to the root cause, and change the process so it can't happen again.",
+      title: "Deliver",
+      body: "Expose governed metrics through the semantic and BI layer people use, then support the decision—not just the dashboard.",
     },
   ],
 

@@ -24,9 +24,6 @@
   $$("[data-bind-mailto]").forEach(function (el) { el.href = "mailto:" + get(el.dataset.bindMailto); });
   $("#year").textContent = new Date().getFullYear();
 
-  /* ---------- Topographic background (see tools/make_contours.py) ---------- */
-  var topo = $(".contours");
-  if (topo && window.CONTOURS_SVG) topo.innerHTML = window.CONTOURS_SVG;
 
   /* ---------- At a glance ---------- */
   $("#glance").innerHTML = S.glance.map(function (g) {
@@ -34,8 +31,9 @@
   }).join("");
 
   /* ---------- Work list + filters ---------- */
+  var featuredWork = S.work.filter(function (w) { return w.featured; });
   var list = $("#work-list");
-  list.innerHTML = S.work.map(function (w, i) {
+  list.innerHTML = featuredWork.map(function (w, i) {
     return (
       '<li class="work-item" data-tags="' + esc(w.tags.map(slug).join(" ")) + '">' +
         '<a class="work-link" href="#work/' + esc(w.id) + '" data-open="' + esc(w.id) + '">' +
@@ -54,7 +52,7 @@
   }).join("");
 
   var allTags = [];
-  S.work.forEach(function (w) { w.tags.forEach(function (t) { if (allTags.indexOf(t) < 0) allTags.push(t); }); });
+  featuredWork.forEach(function (w) { w.tags.forEach(function (t) { if (allTags.indexOf(t) < 0) allTags.push(t); }); });
   var filters = $("#filters");
   filters.innerHTML = ["All"].concat(allTags).map(function (t, i) {
     return '<button type="button" class="chip" aria-pressed="' + (i === 0) + '" data-filter="' + (i === 0 ? "" : slug(t)) + '">' + esc(t) + "</button>";
@@ -68,7 +66,7 @@
       if (on) shown++;
     });
     $$(".chip", filters).forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.filter === tag)); });
-    $("#filter-count").textContent = tag ? "Showing " + shown + " of " + S.work.length : "";
+    $("#filter-count").textContent = tag ? "Showing " + shown + " of " + featuredWork.length : "";
   }
   filters.addEventListener("click", function (e) {
     var b = e.target.closest(".chip");
@@ -88,6 +86,8 @@
   function renderCase(w) {
     var ids = visibleIds();
     var pos = ids.indexOf(w.id);
+    var constraints = w.constraints || [];
+    var architecture = w.architecture || [];
     $("#case-meta").textContent = w.org + " · " + w.year;
     $("#case-pos").textContent = (pos + 1) + " / " + ids.length;
     $$(".case-step", dialog).forEach(function (b) { b.disabled = ids.length < 2; });
@@ -98,8 +98,11 @@
         return "<div><dd>" + esc(m.value) + "</dd><dt>" + esc(m.label) + "</dt></div>";
       }).join("") + "</dl>" +
       '<div class="case-grid">' +
-        '<section><h3>The problem</h3><p>' + esc(w.problem) + "</p></section>" +
-        '<section><h3>What I did</h3><ol class="steps">' + w.approach.map(function (a) { return "<li>" + esc(a) + "</li>"; }).join("") + "</ol></section>" +
+        '<section><h3>Problem</h3><p>' + esc(w.problem) + "</p></section>" +
+        (constraints.length ? '<section><h3>Constraints</h3><ul class="case-list">' + constraints.map(function (item) { return "<li>" + esc(item) + "</li>"; }).join("") + "</ul></section>" : "") +
+        '<section><h3>Approach</h3><ol class="steps">' + w.approach.map(function (a) { return "<li>" + esc(a) + "</li>"; }).join("") + "</ol></section>" +
+        (architecture.length ? '<section class="case-architecture"><h3>Architecture / decisions</h3><ol class="architecture-flow">' + architecture.map(function (item, i) { return '<li><span>' + String(i + 1).padStart(2, "0") + "</span>" + esc(item) + "</li>"; }).join("") + "</ol></section>" : "") +
+        (w.validation ? '<section><h3>Validation</h3><p>' + esc(w.validation) + "</p></section>" : "") +
         '<section class="case-outcome"><h3>Outcome</h3><p>' + esc(w.outcome) + "</p></section>" +
         '<section><h3>Stack</h3><p class="stack">' + w.stack.map(function (s) { return '<span class="tag">' + esc(s) + "</span>"; }).join("") + "</p></section>" +
       "</div>";
@@ -108,10 +111,10 @@
   }
 
   function openCase(id, push) {
-    var idx = S.work.findIndex(function (w) { return w.id === id; });
+    var idx = featuredWork.findIndex(function (w) { return w.id === id; });
     if (idx < 0) return;
     current = idx;
-    renderCase(S.work[idx]);
+    renderCase(featuredWork[idx]);
     if (!dialog.open) {
       lastFocus = document.activeElement;
       dialog.showModal();
@@ -133,7 +136,7 @@
 
   function step(dir) {
     var ids = visibleIds();
-    var i = ids.indexOf(S.work[current].id);
+    var i = ids.indexOf(featuredWork[current].id);
     var next = ids[(i + dir + ids.length) % ids.length];
     openCase(next, false);
     history.replaceState(null, "", "#work/" + next);
@@ -197,7 +200,7 @@
     return '<li><a class="text-link" href="' + esc(l[1]) + '"' + (ext ? ' target="_blank" rel="noopener"' : " download") + ">" + esc(l[0]) + (ext ? " ↗" : " ↓") + "</a></li>";
   }).join("");
 
-  /* ---------- Field map: the hero's evidence layer ---------- */
+  /* ---------- Field map: a personal data-storytelling layer ---------- */
   (function fieldMap() {
     var fig = $("#field-map"), M = window.MA_MAP, F = S.fieldMap;
     if (!fig || !M || !F) { if (fig) fig.hidden = true; return; }
@@ -237,7 +240,7 @@
     }).join("");
 
     fig.innerHTML =
-      '<div class="fm-hero-head"><div><p class="kicker">' + esc(F.kicker) + '</p><h2 id="field-map-title">' + esc(F.title) + '</h2></div><p>' + esc(F.lede) + "</p></div>" +
+      '<div class="fm-head"><div><p class="kicker">' + esc(F.kicker) + '</p><h3 id="field-map-title">' + esc(F.title) + '</h3></div><p>' + esc(F.lede) + "</p></div>" +
       '<div class="fm-canvas">' +
         '<svg class="fm-svg" viewBox="0 0 ' + M.width + " " + M.height + '" role="img" aria-label="Interactive map of Massachusetts with career stops in Amherst, Waltham, and Boston">' +
           '<path class="fm-grat" d="' + grat + '"/><g class="fm-grat-label" aria-hidden="true">' + labels + "</g><g class=\"fm-towns\">" + towns + "</g>" +
@@ -281,43 +284,6 @@
     if ("IntersectionObserver" in window) { var io = new IntersectionObserver(function (en) { if (en[0].isIntersecting) { draw(); io.disconnect(); } }, { threshold: 0.35 }); io.observe(fig); } else { draw(); }
   })();
 
-  /* ---------- Career network: an interactive, map-inspired data portrait ---------- */
-  (function careerNetwork() {
-    var fig = $("#career-network"), F = S.fieldMap;
-    if (!fig || !F) { if (fig) fig.hidden = true; return; }
-    var positions = [[102, 306], [258, 134], [422, 300], [605, 132], [744, 280]];
-    var stages = ["foundation", "implementation", "operations", "spatial analysis", "analytics engineering"];
-    var nodes = F.stops.map(function (stop, i) { return { stop: stop, x: positions[i][0], y: positions[i][1], stage: stages[i] }; });
-    var links = nodes.slice(1).map(function (node, i) {
-      var prev = nodes[i], mid = (prev.x + node.x) / 2;
-      return '<path class="cn-link" data-link="' + i + '" d="M' + prev.x + " " + prev.y + " C" + mid + " " + (prev.y - 100) + "," + mid + " " + (node.y + 100) + "," + node.x + " " + node.y + '"/>';
-    }).join("");
-    var nodeSvg = nodes.map(function (node, i) {
-      return '<g class="cn-node" data-node="' + i + '" tabindex="0" role="button" aria-pressed="false" aria-label="' + esc(node.stop.org) + ', ' + esc(node.stop.years) + '" transform="translate(' + node.x + " " + node.y + ')">' +
-        '<circle class="cn-pulse" r="26"/><circle class="cn-halo" r="15"/><circle class="cn-core" r="6"/>' +
-        '<text class="cn-number" y="4" text-anchor="middle">' + String(i + 1).padStart(2, "0") + '</text><text class="cn-label" x="0" y="-34" text-anchor="middle">' + esc(node.stop.org) + "</text>" +
-      "</g>";
-    }).join("");
-    fig.innerHTML =
-      '<div class="cn-head"><div><p class="kicker">Working map</p><h3 id="career-network-title">A practice built in layers</h3></div><p>Not a geography lesson: a living map of the disciplines that make reliable data work possible. Explore a point to follow the signal.</p></div>' +
-      '<div class="cn-body"><div class="cn-stage"><svg class="cn-svg" viewBox="0 0 840 420" role="group" aria-label="Interactive career network. Select a node for its details."><g class="cn-grid" aria-hidden="true"><path d="M20 80H820M20 210H820M20 340H820"/><path d="M105 20V400M265 20V400M425 20V400M585 20V400M745 20V400"/></g><g class="cn-links" aria-hidden="true">' + links + '</g><g class="cn-nodes">' + nodeSvg + "</g></svg>" +
-        '<p class="cn-axis cn-axis-x">TIME / EXPERIENCE</p><p class="cn-axis cn-axis-y">DEPTH OF PRACTICE</p></div>' +
-        '<aside class="cn-detail" aria-live="polite"><p class="cn-detail-kicker">Data point <span>01</span></p><h4>' + esc(nodes[0].stop.org) + '</h4><p class="cn-detail-role">' + esc(nodes[0].stop.what) + '</p><p class="cn-detail-meta">' + esc(nodes[0].stop.years) + " · " + esc(nodes[0].stop.place) + '</p><p class="cn-detail-stage">' + esc(nodes[0].stage) + "</p></aside></div>" +
-      '<figcaption>Each point is a distinct perspective brought to the work: context, implementation, operations, spatial thinking, and governed analytics.</figcaption>';
-    var detail = $(".cn-detail", fig);
-    function setActive(index) {
-      var node = nodes[index];
-      $$(".cn-node", fig).forEach(function (el) { var on = +el.dataset.node === index; el.classList.toggle("on", on); el.setAttribute("aria-pressed", String(on)); });
-      $$(".cn-link", fig).forEach(function (el, i) { el.classList.toggle("on", i === index || i === index - 1); });
-      detail.innerHTML = '<p class="cn-detail-kicker">Data point <span>' + String(index + 1).padStart(2, "0") + '</span></p><h4>' + esc(node.stop.org) + '</h4><p class="cn-detail-role">' + esc(node.stop.what) + '</p><p class="cn-detail-meta">' + esc(node.stop.years) + " · " + esc(node.stop.place) + '</p><p class="cn-detail-stage">' + esc(node.stage) + "</p>";
-    }
-    fig.addEventListener("pointerover", function (e) { var node = e.target.closest(".cn-node"); if (node) setActive(+node.dataset.node); });
-    fig.addEventListener("focusin", function (e) { var node = e.target.closest(".cn-node"); if (node) setActive(+node.dataset.node); });
-    fig.addEventListener("click", function (e) { var node = e.target.closest(".cn-node"); if (node) setActive(+node.dataset.node); });
-    fig.addEventListener("keydown", function (e) { var node = e.target.closest(".cn-node"); if (node && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); setActive(+node.dataset.node); } });
-    setActive(0);
-    if ("IntersectionObserver" in window) { var io = new IntersectionObserver(function (en) { if (en[0].isIntersecting) { fig.classList.add("drawn"); io.disconnect(); } }, { threshold: 0.25 }); io.observe(fig); } else { fig.classList.add("drawn"); }
-  })();
 
   /* ---------- Side projects + full-screen image viewer ---------- */
   var projects = S.projects || [];

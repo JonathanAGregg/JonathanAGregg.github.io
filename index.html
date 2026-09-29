@@ -3,23 +3,43 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Jonathan Gregg · Analytics Engineer</title>
-  <meta name="description" content="Jonathan Gregg is a Boston-based analytics engineer who builds governed, tested data products: dbt, Snowflake, Dagster, and BI.">
-  <meta property="og:title" content="Jonathan Gregg · Analytics Engineer">
-  <meta property="og:description" content="I build metrics people can trust. Selected work, experience, and contact.">
+  <meta name="robots" content="index,follow">
+  <title>Jonathan Gregg · Senior BI &amp; Analytics Engineer</title>
+  <meta name="description" content="Jonathan Gregg is a Senior BI & Analytics Engineer in Boston who builds trusted data models, governed metrics, and reporting systems from messy operational data.">
+  <meta name="author" content="Jonathan Gregg">
+  <meta property="og:title" content="Jonathan Gregg · Senior BI & Analytics Engineer">
+  <meta property="og:description" content="Trusted data models, governed metrics, and reporting systems that turn messy operational data into decisions.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://jonathanagregg.com/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Jonathan Gregg · Senior BI & Analytics Engineer">
+  <meta name="twitter:description" content="Trusted data models, governed metrics, and reporting systems that turn messy operational data into decisions.">
   <link rel="canonical" href="https://jonathanagregg.com/">
-  <meta name="theme-color" content="#f5f8f8">
+  <meta name="theme-color" content="#10262d">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      "mainEntity": {
+        "@type": "Person",
+        "name": "Jonathan Gregg",
+        "jobTitle": "Senior BI & Analytics Engineer",
+        "address": { "@type": "PostalAddress", "addressLocality": "Boston", "addressRegion": "MA" },
+        "url": "https://jonathanagregg.com/",
+        "sameAs": [
+          "https://www.linkedin.com/in/jonathan-a-gregg/",
+          "https://github.com/JonathanAGregg"
+        ],
+        "knowsAbout": ["Business intelligence", "Analytics engineering", "SQL", "dbt", "Snowflake", "Metric governance", "Semantic layers", "Data modeling"]
+      }
+    }
+  </script>
 
   <!-- Apply the saved theme before first paint to avoid a flash. -->
   <script>
     try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
   </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
@@ -29,16 +49,16 @@
     <div class="wrap header-inner">
       <a class="wordmark" href="#top" aria-label="Back to top">
         <span class="monogram" aria-hidden="true">JG</span>
-        <span class="wordmark-name" data-bind="name"></span>
+        <span class="wordmark-name" data-bind="name">Jonathan Gregg</span>
       </a>
       <nav class="nav" aria-label="Primary">
         <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">Menu</button>
         <ul id="nav-list">
           <li><a href="#work">Work</a></li>
-          <li><a href="#approach">Approach</a></li>
           <li><a href="#experience">Experience</a></li>
-          <li><a href="#about">About</a></li>
+          <li><a href="#approach">How I work</a></li>
           <li><a href="#projects">Projects</a></li>
+          <li><a href="#about">About</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
@@ -46,128 +66,165 @@
         <button class="theme-toggle" type="button" aria-label="Switch color theme">
           <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 3a7 7 0 0 1 0 14z" fill="currentColor"/></svg>
         </button>
-        <a class="btn btn-small" data-bind-href="resume" download>Résumé</a>
+        <a class="btn btn-small" href="assets/files/Jonathan_Gregg_Resume.docx" data-bind-href="resume" download>Résumé</a>
       </div>
     </div>
   </header>
 
   <main id="main">
-    <!-- Hero -->
-    <section class="hero">
-      <div class="contours" aria-hidden="true"></div>
+    <section class="hero" aria-labelledby="hero-title">
       <div class="wrap hero-inner">
         <div class="hero-copy">
-          <p class="eyebrow"><span data-bind="availability"></span></p>
-          <h1 class="hero-title">
-            <span class="hero-name" data-bind="name"></span>
-            <span class="hero-headline" data-bind="hero.headline"></span>
+          <p class="eyebrow" data-bind="availability">Boston, MA · Open to senior BI &amp; analytics engineering roles</p>
+          <h1 class="hero-title" id="hero-title">
+            <span class="hero-name" data-bind="name">Jonathan Gregg</span>
+            <span class="hero-headline" data-bind="hero.headline">Senior BI &amp; Analytics Engineer</span>
           </h1>
-          <p class="hero-intro" data-bind="hero.intro"></p>
+          <p class="hero-intro" data-bind="hero.intro">I build trusted data models, metrics, and reporting systems that turn messy operational data into decisions.</p>
+          <ul class="hero-stack" aria-label="Core analytics stack">
+            <li>Snowflake</li><li>dbt</li><li>SQL</li><li>Sigma</li><li>Power BI</li>
+          </ul>
           <div class="hero-cta">
             <a class="text-link" href="#work">Selected work</a>
             <a class="text-link" href="#contact">Get in touch</a>
           </div>
-          <dl class="glance" id="glance"></dl>
+          <dl class="glance" id="glance">
+            <div class="glance-item"><dt>years in data</dt><dd>7+</dd></div>
+            <div class="glance-item"><dt>governed metrics shipped</dt><dd>50+</dd></div>
+            <div class="glance-item"><dt>production records migrated</dt><dd>44.5K</dd></div>
+            <div class="glance-item"><dt>sq ft of portfolio analytics</dt><dd>230M</dd></div>
+          </dl>
         </div>
-        <figure class="field-map hero-field-map" id="field-map" aria-labelledby="field-map-title"></figure>
+        <figure class="hero-lineage" aria-labelledby="lineage-title">
+          <figcaption>
+            <p class="kicker">Analytics lifecycle</p>
+            <h2 id="lineage-title">From operational signal to a decision people can defend.</h2>
+          </figcaption>
+          <ol>
+            <li><span class="lineage-index">01</span><strong>Source systems</strong><small>Operational context</small></li>
+            <li><span class="lineage-index">02</span><strong>Warehouse models</strong><small>Reusable logic</small></li>
+            <li><span class="lineage-index">03</span><strong>Governed metrics</strong><small>Defined &amp; tested</small></li>
+            <li><span class="lineage-index">04</span><strong>BI &amp; semantic layer</strong><small>Clear consumption</small></li>
+            <li><span class="lineage-index">05</span><strong>Business decision</strong><small>Shared confidence</small></li>
+          </ol>
+          <p class="lineage-note">Definition, lineage, and validation are part of the product—not cleanup after the report ships.</p>
+        </figure>
       </div>
     </section>
 
-    <!-- Work -->
     <section class="section" id="work" aria-labelledby="work-title">
       <div class="wrap">
-        <div class="section-head">
+        <div class="section-head work-head">
           <p class="kicker">Selected work</p>
-          <h2 id="work-title">Problems I've solved, and how</h2>
-          <p class="section-lede">Each case study covers the problem, my approach, and the outcome. Client names and internal figures are left out.</p>
+          <h2 id="work-title">Problems I've solved, and how.</h2>
+          <p class="section-lede">Three examples of owning the path from ambiguous operational data to governed analytics systems. Names and sensitive details remain intentionally limited.</p>
         </div>
         <div class="filters" role="toolbar" aria-label="Filter case studies" id="filters"></div>
         <p class="filter-count" id="filter-count" aria-live="polite"></p>
-        <ol class="work-list" id="work-list"></ol>
+        <ol class="work-list" id="work-list">
+          <li class="work-item"><article class="work-static"><p class="work-meta">AdeptID · 2026 · Analytics engineering / BI</p><h3>A governed headcount model for executive recruiting decisions</h3><p>Replaced a hand-built executive workbook with a governed dbt semantic layer, giving Finance, Operations, and leadership one definition of recruiter headcount.</p><p class="work-static-outcome"><strong>Outcome:</strong> Every downstream report now uses the same definition.</p></article></li>
+          <li class="work-item"><article class="work-static"><p class="work-meta">AdeptID · 2026 · Analytics engineering / Data platform</p><h3>A metric layer that can explain the past as well as the present</h3><p>Took a canonical library of 50+ company metrics into the warehouse and built point-in-time history for reproducible period reporting.</p><p class="work-static-outcome"><strong>Outcome:</strong> Executive reporting now runs on governed views.</p></article></li>
+          <li class="work-item"><article class="work-static"><p class="work-meta">AdeptID · 2026 · Analytics engineering</p><h3>A measurement contract for an AI matching product</h3><p>Defined and modeled the validated outcomes behind product-performance reporting, with shared rules across Product, Engineering, and Finance.</p><p class="work-static-outcome"><strong>Outcome:</strong> A validated fact table ready for product reporting.</p></article></li>
+        </ol>
       </div>
     </section>
 
-    <!-- Approach -->
-    <section class="section section-alt" id="approach" aria-labelledby="approach-title">
-      <div class="wrap">
-        <div class="section-head">
-          <p class="kicker">Approach</p>
-          <h2 id="approach-title">How I work</h2>
-        </div>
-        <ol class="principles" id="principles"></ol>
-      </div>
-    </section>
-
-    <!-- Experience -->
-    <section class="section" id="experience" aria-labelledby="exp-title">
+    <section class="section section-alt" id="experience" aria-labelledby="exp-title">
       <div class="wrap two-col">
         <div class="section-head">
           <p class="kicker">Experience</p>
-          <h2 id="exp-title">Where I've done it</h2>
-          <p class="section-lede">Seven years across four companies, from client implementations to analytics engineering.</p>
-          <a class="text-link" data-bind-href="resume" download>Download the full résumé →</a>
+          <h2 id="exp-title">From implementation to analytics ownership.</h2>
+          <p class="section-lede">Seven years progressing from client data systems and revenue analytics to governed metric layers, warehouse architecture, and executive decision support.</p>
+          <a class="text-link" href="assets/files/Jonathan_Gregg_Resume.docx" data-bind-href="resume" download>Download the full résumé →</a>
         </div>
         <div>
-          <ol class="timeline" id="timeline"></ol>
-          <h3 class="toolkit-title">Toolkit</h3>
+          <p class="experience-arc" aria-label="Career progression"><span>Client systems</span><span>BI development</span><span>Analytics engineering</span><span>Data ownership</span></p>
+          <ol class="timeline" id="timeline">
+            <li class="role"><details open><summary><span class="role-head"><span class="role-title">Senior Business Intelligence Engineer</span><span class="role-org">AdeptID</span></span><span class="role-dates">May–Sep 2026 · Boston, MA</span></summary><p class="role-blurb">Owned executive reporting, governed metric delivery, and warehouse automation.</p></details></li>
+            <li class="role"><details><summary><span class="role-head"><span class="role-title">Data Analytics &amp; Visualization Specialist</span><span class="role-org">Cresa</span></span><span class="role-dates">2024–2026 · Boston, MA</span></summary><p class="role-blurb">Connected geospatial, lease, asset, and market data for portfolio decisions.</p></details></li>
+            <li class="role"><details><summary><span class="role-head"><span class="role-title">Data Solutions Analyst, Revenue Operations</span><span class="role-org">Quantum Metric</span></span><span class="role-dates">2021–2023 · Remote</span></summary><p class="role-blurb">Built durable revenue datasets and reporting for multiple business units.</p></details></li>
+          </ol>
+          <h3 class="toolkit-title">Core toolkit</h3>
           <div class="toolkit" id="toolkit"></div>
         </div>
       </div>
     </section>
 
-    <!-- About -->
-    <section class="section section-alt" id="about" aria-labelledby="about-title">
-      <div class="wrap two-col">
-        <div class="section-head">
-          <p class="kicker">About</p>
-          <h2 id="about-title">From maps to metrics</h2>
-        </div>
-        <div class="about-content">
-          <figure class="about-portrait">
-            <img src="assets/img/jonathan-gregg.jpg" alt="Portrait of Jonathan Gregg" width="1600" height="2133" loading="lazy" decoding="async">
-            <figcaption><span>Boston</span>, MA</span><span>Working at the intersection of systems and people</span></figcaption>
-          </figure>
-          <div class="prose" id="about-body"></div>
-        </div>
-      </div>
+    <section class="section" id="approach" aria-labelledby="approach-title">
       <div class="wrap">
-        <figure class="career-network" id="career-network" aria-labelledby="career-network-title"></figure>
+        <div class="section-head approach-head">
+          <p class="kicker">How I work</p>
+          <h2 id="approach-title">A trusted metric is a system, not a number.</h2>
+          <p class="section-lede">Business question → metric definition → warehouse logic → QA → BI experience. Each step makes the next one more reliable.</p>
+        </div>
+        <ol class="principles" id="principles">
+          <li class="principle"><span class="principle-num">01</span><h3>Define</h3><p>Write the metric contract: owner, grain, rules, and the decision it supports.</p></li>
+          <li class="principle"><span class="principle-num">02</span><h3>Model</h3><p>Make reusable logic versioned, reviewable, and available beyond one report.</p></li>
+          <li class="principle"><span class="principle-num">03</span><h3>Validate</h3><p>Use source parity, structural checks, and stakeholder review before release.</p></li>
+          <li class="principle"><span class="principle-num">04</span><h3>Deliver</h3><p>Expose a governed answer where people make decisions.</p></li>
+        </ol>
       </div>
     </section>
 
-    <!-- Side projects -->
-    <section class="section" id="projects" aria-labelledby="projects-title">
+    <section class="section section-alt" id="projects" aria-labelledby="projects-title">
       <div class="wrap">
         <div class="section-head">
-          <p class="kicker">Portfolio work</p>
-          <h2 id="projects-title">Independent projects</h2>
+          <p class="kicker">Independent projects</p>
+          <h2 id="projects-title">Public experiments in decision support and data visualization.</h2>
+          <p class="section-lede">A small collection of work that demonstrates techniques and questions I cannot show from client systems.</p>
         </div>
         <div id="project-list"></div>
       </div>
     </section>
 
-    <!-- Contact -->
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="wrap two-col">
+        <div class="section-head">
+          <p class="kicker">About</p>
+          <h2 id="about-title">From maps to metrics.</h2>
+        </div>
+        <div class="about-content">
+          <figure class="about-portrait">
+            <img src="assets/img/jonathan-gregg.jpg" alt="Jonathan Gregg seated beside a fountain in a tree-lined square" width="1600" height="2133" loading="lazy" decoding="async">
+            <figcaption><span>Boston, MA</span><span>Working at the intersection of systems and people</span></figcaption>
+          </figure>
+          <div class="prose" id="about-body">
+            <p>I studied geography at UMass Amherst, and I still approach data the way a cartographer approaches a map: it should be accurate, honest about what it leaves out, and readable by someone who was not in the room.</p>
+            <p>My work moved from client data implementations to revenue analytics, geospatial systems, and analytics engineering. The common thread is understanding complicated systems and making them understandable enough to act on.</p>
+            <p>I use AI coding tools to move faster, and I verify every result before it ships.</p>
+            <p class="edu">B.A. Geography (Globalization &amp; International Studies) · GIS Certificate · UMass Amherst, 2018</p>
+          </div>
+        </div>
+      </div>
+      <div class="wrap">
+        <figure class="field-map about-field-map" id="field-map" aria-labelledby="field-map-title"></figure>
+      </div>
+    </section>
+
     <section class="section contact" id="contact" aria-labelledby="contact-title">
       <div class="wrap">
         <p class="kicker">Contact</p>
         <h2 id="contact-title" class="contact-title">Hiring for analytics engineering or BI? Let's talk.</h2>
         <div class="contact-row">
-          <a class="contact-email" data-bind-mailto="email"><span data-bind="email"></span></a>
+          <a class="contact-email" href="mailto:jonathan.a.gregg@gmail.com" data-bind-mailto="email"><span data-bind="email">jonathan.a.gregg@gmail.com</span></a>
           <button class="btn btn-ghost btn-small" type="button" id="copy-email">Copy email</button>
         </div>
-        <ul class="contact-links" id="contact-links"></ul>
+        <ul class="contact-links" id="contact-links">
+          <li><a class="text-link" href="https://www.linkedin.com/in/jonathan-a-gregg/" target="_blank" rel="noopener">LinkedIn ↗</a></li>
+          <li><a class="text-link" href="https://github.com/JonathanAGregg" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a class="text-link" href="assets/files/Jonathan_Gregg_Resume.docx" download>Résumé ↓</a></li>
+        </ul>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">
-      <p>© <span id="year"></span> <span data-bind="name"></span> · <span data-bind="location"></span></p>
+      <p>© <span id="year"></span> <span data-bind="name">Jonathan Gregg</span> · <span data-bind="location">Boston, MA</span></p>
       <a href="#top" class="text-link">Back to top ↑</a>
     </div>
   </footer>
 
-  <!-- Case study panel -->
   <dialog class="case" id="case" aria-labelledby="case-title">
     <div class="case-bar">
       <p class="case-meta" id="case-meta"></p>
@@ -181,7 +238,6 @@
     </div>
   </dialog>
 
-  <!-- Full-screen image viewer -->
   <dialog class="lightbox" id="lightbox" aria-label="Full-size image">
     <div class="lightbox-bar">
       <p class="lightbox-caption" id="lightbox-caption"></p>
@@ -194,11 +250,7 @@
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <noscript><p class="wrap">This site needs JavaScript to show its content. You can also reach me at jonathan.a.gregg@gmail.com.</p></noscript>
-
   <script src="assets/js/content.js"></script>
-  <script src="assets/js/contours.js"></script>
   <script src="assets/js/ma-map.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
